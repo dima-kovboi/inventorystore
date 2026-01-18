@@ -2,155 +2,381 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>InventoryStore</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Nexus Store</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        :root { --bg: #0f0f13; --card: #1e1e24; --text: #fff; --accent: #ff9900; }
-        body { background: var(--bg); color: var(--text); font-family: sans-serif; padding: 15px; margin: 0; }
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .balance-box { background: #333; padding: 5px 10px; border-radius: 8px; font-size: 14px; font-weight: bold; color: #4cd964; }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .card { background: var(--card); padding: 15px; border-radius: 12px; text-align: center; border: 1px solid #333; }
-        .card:active { transform: scale(0.98); }
-        .btn { background: var(--accent); color: #fff; border: none; padding: 8px; width: 100%; border-radius: 6px; margin-top: 8px; font-weight: bold; cursor: pointer;}
-        .tabs { display: flex; margin-bottom: 15px; gap: 10px; overflow-x: auto; }
-        .tab { background: #333; padding: 8px 15px; border-radius: 20px; font-size: 13px; white-space: nowrap; }
-        .tab.active { background: var(--accent); color: #000; }
+        :root {
+            --bg-body: #0e1117;
+            --bg-card: #161b28;
+            --bg-card-hover: #1c2230;
+            --text-main: #ffffff;
+            --text-sec: #8b95a5;
+            --accent-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --btn-gradient: linear-gradient(90deg, #4776E6 0%, #8E54E9 100%);
+            --radius: 16px;
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
-        #cart-modal { display: none; position: fixed; bottom: 0; left: 0; width: 100%; background: #222; border-top: 2px solid var(--accent); padding: 20px; box-sizing: border-box; border-radius: 20px 20px 0 0; }
-        .loader { text-align: center; padding: 20px; color: #888; }
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+            padding-bottom: 80px; /* Место для кнопки корзины */
+        }
+
+        /* HEADER */
+        .header {
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(14, 17, 23, 0.95);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .user-info { display: flex; align-items: center; gap: 10px; }
+        .user-avatar { width: 32px; height: 32px; background: var(--accent-gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 14px;}
+        .balance-badge {
+            background: rgba(76, 217, 100, 0.15);
+            color: #4cd964;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 13px;
+            border: 1px solid rgba(76, 217, 100, 0.2);
+        }
+
+        /* WELCOME BANNER */
+        .welcome-card {
+            margin: 20px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 100%);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: var(--radius);
+            padding: 20px;
+            text-align: center;
+        }
+        .welcome-title { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+        .welcome-text { font-size: 13px; color: var(--text-sec); line-height: 1.4; }
+
+        /* GRID SYSTEM */
+        .section-title { font-size: 18px; font-weight: 700; margin: 25px 20px 15px; }
+        
+        .games-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            padding: 0 20px;
+        }
+
+        .game-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            overflow: hidden;
+            position: relative;
+            height: 140px;
+            cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: transform 0.2s;
+        }
+        .game-card:active { transform: scale(0.97); }
+
+        /* Имитация баннеров (можно заменить на картинки) */
+        .game-banner { height: 100%; width: 100%; position: absolute; top: 0; left: 0; background-size: cover; background-position: center; }
+        .overlay {
+            position: absolute; bottom: 0; left: 0; width: 100%;
+            padding: 15px;
+            background: linear-gradient(0deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%);
+        }
+        .game-name { font-weight: 700; font-size: 15px; display: flex; align-items: center; justify-content: space-between; }
+        
+        /* ITEM LIST (Скрыт по умолчанию) */
+        #game-page { display: none; padding: 20px; min-height: 100vh; background: var(--bg-body); position: fixed; top: 0; left: 0; width: 100%; z-index: 200; overflow-y: auto; }
+        
+        .back-btn {
+            width: 40px; height: 40px; background: var(--bg-card); border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 20px; cursor: pointer; border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .items-list { display: flex; flex-direction: column; gap: 12px; }
+        
+        .item-row {
+            background: var(--bg-card);
+            padding: 12px 15px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 1px solid rgba(255,255,255,0.03);
+        }
+        
+        .item-info { display: flex; align-items: center; gap: 15px; }
+        .item-icon { font-size: 24px; }
+        .item-title { font-weight: 600; font-size: 14px; margin-bottom: 4px; }
+        .item-price { font-size: 13px; color: #4776E6; font-weight: 700; }
+
+        .btn-add {
+            background: var(--btn-gradient);
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        /* CART BUTTON */
+        .cart-sticky {
+            position: fixed; bottom: 20px; left: 20px; right: 20px;
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 16px;
+            display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            z-index: 500;
+            display: none; /* Скрыта если пуста */
+        }
+        .cart-total { font-weight: 700; font-size: 16px; }
+        .btn-checkout {
+            background: var(--btn-gradient);
+            border: none; padding: 10px 20px; border-radius: 10px;
+            color: white; font-weight: 700;
+        }
+
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <div style="font-weight: bold; font-size: 18px;">InventoryStore</div>
-        <div class="balance-box" id="balance">Loading...</div>
-    </div>
-
-    <div class="tabs">
-        <div class="tab active" onclick="filter('all')">Все</div>
-        <div class="tab" onclick="filter('bs')">Brawl Stars</div>
-        <div class="tab" onclick="filter('pubg')">PUBG</div>
-        <div class="tab" onclick="filter('fn')">Fortnite</div>
-    </div>
-
-    <div id="products" class="grid">
-        <!-- Товары загрузятся тут -->
-    </div>
-
-    <div id="cart-btn" style="position: fixed; bottom: 20px; right: 20px; background: var(--accent); padding: 15px; border-radius: 50%; box-shadow: 0 0 10px rgba(255,153,0,0.5); display: none;" onclick="openCart()">
-        🛒
-    </div>
-
-    <div id="cart-modal">
-        <h3>Корзина</h3>
-        <div id="cart-items">Пусто</div>
-        <div style="margin-top: 15px; display: flex; gap: 10px;">
-            <button class="btn" style="background: #ff3b30;" onclick="api('clearCart')">Очистить</button>
-            <button class="btn" style="background: #4cd964;" onclick="api('payCart')">Оплатить</button>
+    <!-- MAIN MENU -->
+    <div id="main-screen">
+        <div class="header">
+            <div class="user-info">
+                <div class="user-avatar" id="avatar">U</div>
+                <div style="font-weight: 600; font-size: 14px;">Shop</div>
+            </div>
+            <div class="balance-badge" id="balance">... ₽</div>
         </div>
-        <div style="text-align: center; margin-top: 10px; color: #888; font-size: 12px;" onclick="document.getElementById('cart-modal').style.display='none'">Закрыть</div>
+
+        <div class="welcome-card">
+            <div class="welcome-title">InventoryStore 🚀</div>
+            <div class="welcome-text">Самые низкие цены, безопасный донат и быстрое выполнение заказов!</div>
+        </div>
+
+        <div class="section-title">Каталог игр</div>
+        <div class="games-grid">
+            <!-- BRAWL STARS CARD -->
+            <div class="game-card" onclick="openGame('bs', 'Brawl Stars')">
+                <!-- Замени ссылку в url(...) на свою картинку -->
+                <div class="game-banner" style="background-image: url('https://wallpapers.com/images/hd/brawl-stars-loading-screen-w9r17f7q2z3q5w1f.jpg');"></div>
+                <div class="overlay">
+                    <div class="game-name">Brawl Stars <i class="fas fa-chevron-right"></i></div>
+                </div>
+            </div>
+
+            <!-- PUBG CARD -->
+            <div class="game-card" onclick="openGame('pubg', 'PUBG Mobile')">
+                <div class="game-banner" style="background-image: url('https://w0.peakpx.com/wallpaper/774/267/HD-wallpaper-pubg-mobile-game-logo.jpg');"></div>
+                <div class="overlay">
+                    <div class="game-name">PUBG Mobile <i class="fas fa-chevron-right"></i></div>
+                </div>
+            </div>
+
+            <!-- FORTNITE CARD -->
+            <div class="game-card" onclick="openGame('fn', 'Fortnite')">
+                <div class="game-banner" style="background-image: url('https://wallpapers.com/images/hd/fortnite-llama-loot-box-3d-4k-wallpaper-p2j07d3w5x2c1x1f.jpg');"></div>
+                <div class="overlay">
+                    <div class="game-name">Fortnite <i class="fas fa-chevron-right"></i></div>
+                </div>
+            </div>
+
+            <!-- BLOOD STRIKE CARD -->
+            <div class="game-card" onclick="openGame('bl', 'Blood Strike')">
+                <div class="game-banner" style="background-image: url('https://play-lh.googleusercontent.com/9C0d6b_wXyqQf8m6d9c6x2d9x2d9x2d9x2d9x2d9x2d9x2d9x2d9x2d9x2d9x2d9=w526-h296-rw');"></div>
+                <div class="overlay">
+                    <div class="game-name">Blood Strike <i class="fas fa-chevron-right"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- GAME PAGE (Hidden by default) -->
+    <div id="game-page">
+        <div class="back-btn" onclick="closeGame()">
+            <i class="fas fa-arrow-left"></i>
+        </div>
+        <h2 id="game-title" style="margin-top: 0; margin-bottom: 20px;">Game Name</h2>
+        <div class="items-list" id="items-container">
+            <!-- Товары загрузятся тут -->
+        </div>
+    </div>
+
+    <!-- STICKY CART -->
+    <div class="cart-sticky" id="cart-panel">
+        <div>
+            <div style="font-size: 12px; color: #aaa;">К оплате:</div>
+            <div class="cart-total" id="cart-total">0 ₽</div>
+        </div>
+        <button class="btn-checkout" onclick="checkout()">Купить <i class="fas fa-shopping-bag"></i></button>
     </div>
 
     <script>
         const tg = window.Telegram.WebApp;
         tg.expand();
+        tg.enableClosingConfirmation();
 
-        // ⚠️ ВСТАВЬ СЮДА СВОЮ НОВУЮ ССЫЛКУ ИЗ СКРИПТА (/exec)
+        // ⚠️ ВСТАВЬ СЮДА ССЫЛКУ ИЗ GOOGLE SCRIPT (/exec)
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby5JLTxemN8nWZclICGpJ0TxYLUkcNqcZN8pF31-wLnkQddgZ_GtkofM5s-QHQADLon3g/exec";
 
-        // Берем ID юзера (или ставим 1438120200 для теста в браузере)
-        const userId = tg.initDataUnsafe?.user?.id || 1438120200; 
+        // Получаем ID (или ставим тестовый, если открыто в браузере)
+        const userId = tg.initDataUnsafe?.user?.id || 1438120200;
+        const firstName = tg.initDataUnsafe?.user?.first_name || "User";
+        
+        document.getElementById("avatar").innerText = firstName.charAt(0);
 
-        const CATALOG = [
-            { id: "bs_30", name: "30 Гемов", price: 150, type: "bs", icon: "💎" },
-            { id: "bs_80", name: "80 Гемов", price: 350, type: "bs", icon: "💎" },
-            { id: "bs_170", name: "170 Гемов", price: 650, type: "bs", icon: "💎" },
-            { id: "pubg_60", name: "60 UC", price: 90, type: "pubg", icon: "💵" },
-            { id: "pubg_325", name: "325 UC", price: 450, type: "pubg", icon: "💵" },
-            { id: "fn_1000", name: "1000 V-Bucks", price: 800, type: "fn", icon: "⛏" },
-        ];
+        // КАТАЛОГ ТОВАРОВ
+        const CATALOG = {
+            'bs': [
+                { id: "bs_30", name: "30 Гемов", price: 150, icon: "💎" },
+                { id: "bs_80", name: "80 Гемов", price: 350, icon: "💎" },
+                { id: "bs_170", name: "170 Гемов", price: 650, icon: "💎" },
+                { id: "bs_360", name: "360 Гемов", price: 1200, icon: "💎" },
+                { id: "bs_950", name: "950 Гемов", price: 3000, icon: "💎" },
+                { id: "bs_2000", name: "2000 Гемов", price: 5500, icon: "💎" }
+            ],
+            'pubg': [
+                { id: "pubg_60", name: "60 UC", price: 90, icon: "💵" },
+                { id: "pubg_325", name: "325 UC", price: 450, icon: "💵" },
+                { id: "pubg_660", name: "660 UC", price: 850, icon: "💵" },
+                { id: "pubg_1800", name: "1800 UC", price: 2100, icon: "💵" }
+            ],
+            'fn': [
+                { id: "fn_1000", name: "1000 V-Bucks", price: 800, icon: "⛏" },
+                { id: "fn_2800", name: "2800 V-Bucks", price: 1900, icon: "⛏" },
+                { id: "fn_5000", name: "5000 V-Bucks", price: 3200, icon: "⛏" }
+            ],
+            'bl': [
+                { id: "bl_100", name: "100 Gold", price: 100, icon: "🩸" },
+                { id: "bl_500", name: "500 Gold", price: 450, icon: "🩸" },
+                { id: "bl_1000", name: "1000 Gold", price: 850, icon: "🩸" }
+            ]
+        };
 
-        // 1. Загрузка данных
+        let currentCartTotal = 0;
+
+        // ЗАГРУЗКА
         async function init() {
-            renderProducts();
-            const res = await fetch(SCRIPT_URL, {
-                method: "POST",
-                body: JSON.stringify({ action: "getUserInfo", userId: userId })
-            });
-            const data = await res.json();
-            if(data.status === "ok") {
-                document.getElementById("balance").innerText = data.user.balance + " ₽";
-                document.getElementById("cart-btn").style.display = "block";
+            try {
+                const res = await fetch(SCRIPT_URL, {
+                    method: "POST",
+                    body: JSON.stringify({ action: "getUserInfo", userId: userId })
+                });
+                const data = await res.json();
+                if(data.status === "ok") {
+                    document.getElementById("balance").innerText = data.user.balance + " ₽";
+                    updateCartUI(); // Проверяем корзину при старте
+                }
+            } catch (e) {
+                console.error("Ошибка сети");
             }
         }
 
-        // 2. Отрисовка товаров
-        function renderProducts(type = 'all') {
-            const container = document.getElementById("products");
+        // НАВИГАЦИЯ
+        function openGame(type, title) {
+            document.getElementById("game-title").innerText = title;
+            const container = document.getElementById("items-container");
             container.innerHTML = "";
-            CATALOG.forEach(item => {
-                if (type === 'all' || item.type === type) {
-                    container.innerHTML += `
-                        <div class="card" onclick="addToCart('${item.id}')">
-                            <div style="font-size: 30px">${item.icon}</div>
-                            <div style="font-weight: bold; margin: 5px 0;">${item.name}</div>
-                            <div style="color: #aaa; font-size: 14px;">${item.price} ₽</div>
-                            <button class="btn">В корзину</button>
+
+            CATALOG[type].forEach(item => {
+                container.innerHTML += `
+                    <div class="item-row">
+                        <div class="item-info">
+                            <div class="item-icon">${item.icon}</div>
+                            <div>
+                                <div class="item-title">${item.name}</div>
+                                <div class="item-price">${item.price} ₽</div>
+                            </div>
                         </div>
-                    `;
-                }
+                        <button class="btn-add" onclick="addToCart('${item.id}')">Купить</button>
+                    </div>
+                `;
             });
+
+            document.getElementById("game-page").style.display = "block";
+            // Анимация появления
+            document.getElementById("game-page").animate([
+                { transform: 'translateX(100%)' },
+                { transform: 'translateX(0)' }
+            ], { duration: 250, easing: 'ease-out' });
         }
 
-        function filter(type) {
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            event.target.classList.add('active');
-            renderProducts(type);
+        function closeGame() {
+             const page = document.getElementById("game-page");
+             const anim = page.animate([
+                { transform: 'translateX(0)' },
+                { transform: 'translateX(100%)' }
+            ], { duration: 200, easing: 'ease-in' });
+            
+            anim.onfinish = () => {
+                page.style.display = "none";
+            };
         }
 
-        // 3. Работа с API (Корзина)
+        // КОРЗИНА
         async function addToCart(code) {
+            tg.HapticFeedback.impactOccurred('light'); // Вибрация
             tg.MainButton.showProgress();
+            
             await fetch(SCRIPT_URL, {
                 method: "POST",
                 body: JSON.stringify({ action: "addToCart", userId: userId, itemCode: code })
             });
+            
             tg.MainButton.hideProgress();
-            tg.showAlert("Товар добавлен в корзину!");
+            tg.showAlert("Добавлено в корзину!");
+            updateCartUI(); // Обновляем плашку снизу
         }
 
-        async function openCart() {
-            document.getElementById("cart-modal").style.display = "block";
-            document.getElementById("cart-items").innerHTML = "Загрузка...";
-            
+        async function updateCartUI() {
             const res = await fetch(SCRIPT_URL, {
                 method: "POST",
                 body: JSON.stringify({ action: "getCart", userId: userId })
             });
             const data = await res.json();
             
-            let html = "";
-            if (data.items.length === 0) html = "Корзина пуста";
-            else {
-                data.items.forEach(i => html += `<div>• ${i.name} - <b>${i.price}₽</b></div>`);
-                html += `<div style="margin-top: 10px; border-top: 1px solid #444; padding-top: 5px;">Итого: <b>${data.total} ₽</b></div>`;
+            if(data.total > 0) {
+                document.getElementById("cart-panel").style.display = "flex";
+                document.getElementById("cart-total").innerText = data.total + " ₽";
+                currentCartTotal = data.total;
+            } else {
+                document.getElementById("cart-panel").style.display = "none";
             }
-            document.getElementById("cart-items").innerHTML = html;
         }
 
-        async function api(action) {
-            if(!confirm("Вы уверены?")) return;
+        async function checkout() {
+            if(!confirm(`Списать ${currentCartTotal} ₽ с баланса?`)) return;
+            
+            tg.MainButton.showProgress();
             const res = await fetch(SCRIPT_URL, {
                 method: "POST",
-                body: JSON.stringify({ action: action, userId: userId })
+                body: JSON.stringify({ action: "payCart", userId: userId })
             });
             const data = await res.json();
-            if (data.status === "ok") {
-                tg.showAlert("Успешно!");
-                location.reload(); // Перезагрузить страницу для обновления баланса
+            tg.MainButton.hideProgress();
+            
+            if(data.status === "ok") {
+                tg.showAlert("Успешно оплачено! Ожидайте выдачи.");
+                location.reload();
             } else {
                 tg.showAlert("Ошибка: " + data.message);
             }
@@ -158,6 +384,5 @@
 
         init();
     </script>
-
 </body>
 </html>
