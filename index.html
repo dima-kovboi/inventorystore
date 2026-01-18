@@ -18,6 +18,7 @@
             --text-muted: #8b95a5;
             --success: #00b894;
             --danger: #d63031;
+            --stars: #FFD700;
             --radius: 16px;
         }
 
@@ -75,8 +76,28 @@
             border-bottom: 1px solid rgba(255,255,255,0.05);
         }
         
-        .brand { font-size: 18px; font-weight: 800; letter-spacing: -0.5px; }
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary);
+            background: var(--bg-secondary);
+        }
+
+        .brand { 
+            font-size: 16px; 
+            font-weight: 800; 
+            line-height: 1.2;
+        }
         .brand span { color: var(--primary); }
+        .user-name { font-size: 11px; color: var(--text-muted); font-weight: 400; }
 
         .balance-container {
             background: rgba(108, 92, 231, 0.15);
@@ -171,7 +192,7 @@
         }
         .game-name { font-weight: 700; font-size: 14px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
 
-        /* --- PRODUCT MODAL (FULL PAGE) --- */
+        /* --- PRODUCT MODAL --- */
         #product-page {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -241,7 +262,7 @@
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.8);
             z-index: 500;
-            align-items: flex-end; /* Sheet style */
+            align-items: flex-end; 
             animation: fadeIn 0.2s;
         }
         
@@ -264,6 +285,7 @@
             transition: 0.2s;
         }
         .pay-method.active { border-color: var(--primary); background: rgba(108, 92, 231, 0.05); }
+        
         .pay-title { display: flex; align-items: center; gap: 10px; font-weight: 600; }
         .pay-details { 
             margin-top: 10px; padding-top: 10px; 
@@ -274,7 +296,6 @@
         }
         .copy-btn { font-size: 11px; background: rgba(255,255,255,0.1); padding: 4px 8px; border-radius: 4px; float: right; cursor: pointer; }
 
-        /* --- ANIMATIONS --- */
         @keyframes fadeIn { from{opacity:0} to{opacity:1} }
         @keyframes slideUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
         
@@ -301,7 +322,14 @@
     <div id="home">
         <!-- Header -->
         <div class="header">
-            <div class="brand">Inventory<span>Store</span></div>
+            <div class="user-info">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/1024px-Default_pfp.svg.png" id="user-ava" class="user-avatar" alt="Avatar">
+                <div>
+                    <div class="brand">Inventory<span>Store</span></div>
+                    <div class="user-name" id="user-name-display">Гость</div>
+                </div>
+            </div>
+            
             <div class="balance-container">
                 <div class="balance-val" id="balance">0 ₽</div>
                 <button class="btn btn-icon" onclick="openDeposit()">+</button>
@@ -328,9 +356,9 @@
                 <img src="https://wallpapers.com/images/hd/brawl-stars-loading-screen-w9r17f7q2z3q5w1f.jpg" class="game-bg">
                 <div class="game-info"><div class="game-name">Brawl Stars</div></div>
             </div>
-            <div class="game-card" onclick="openGame('pubg', 'PUBG Mobile')">
+            <div class="game-card" onclick="openGame('pubg', 'PUBG Battlegrounds')">
                 <img src="https://w0.peakpx.com/wallpaper/774/267/HD-wallpaper-pubg-mobile-game-logo.jpg" class="game-bg">
-                <div class="game-info"><div class="game-name">PUBG Mobile</div></div>
+                <div class="game-info"><div class="game-name">PUBG PC</div></div>
             </div>
             <div class="game-card" onclick="openGame('fn', 'Fortnite')">
                 <img src="https://wallpapers.com/images/hd/fortnite-llama-loot-box-3d-4k-wallpaper-p2j07d3w5x2c1x1f.jpg" class="game-bg">
@@ -343,7 +371,7 @@
         </div>
     </div>
 
-    <!-- PRODUCT PAGE (SLIDE OVER) -->
+    <!-- PRODUCT PAGE -->
     <div id="product-page">
         <div class="page-header">
             <div class="back-btn" onclick="closeGame()"><i class="fas fa-arrow-left"></i></div>
@@ -352,7 +380,7 @@
         <div id="items-container" class="items-list"></div>
     </div>
 
-    <!-- FLOATING CART -->
+    <!-- CART BAR -->
     <div class="cart-overlay" id="cart-bar">
         <div>
             <div class="cart-info">К оплате</div>
@@ -374,9 +402,9 @@
             <div class="pay-method" onclick="togglePayDetails(this)">
                 <div class="pay-title"><i class="far fa-credit-card" style="color:#a29bfe"></i> Банковская карта</div>
                 <div class="pay-details">
-                    <span id="d-bank">Банк</span>
+                    <span id="d-bank">Сбербанк / Тинькофф</span>
                     <br>
-                    <b id="d-card">0000 0000 0000 0000</b>
+                    <b id="d-card">...</b> 
                     <span class="copy-btn" onclick="copyText('d-card')">Коп.</span>
                     <br><br>⚠️ После перевода отправьте скриншот чека в поддержку.
                 </div>
@@ -387,9 +415,18 @@
                 <div class="pay-details">
                     USDT (TON Network)
                     <br>
-                    <span id="d-crypto" style="font-size:11px; font-family:monospace;">UQ...</span>
+                    <span id="d-crypto" style="font-size:11px; font-family:monospace;">...</span>
                     <span class="copy-btn" onclick="copyText('d-crypto')">Коп.</span>
                     <br><br>⚠️ Только TON Network!
+                </div>
+            </div>
+            
+            <div class="pay-method" onclick="alert('Для оплаты звездами (Telegram Stars) перейдите в бота!')">
+                <div class="pay-title">
+                    <i class="fas fa-star" style="color:var(--stars)"></i> Telegram Stars
+                </div>
+                <div class="pay-details" style="display:none">
+                    Перейдите в бота для покупки
                 </div>
             </div>
         </div>
@@ -397,19 +434,23 @@
 
     <script>
         // ==========================================
-        // ⚙️ НАСТРОЙКИ (ВСТАВЬ ССЫЛКУ НИЖЕ)
+        // ⚙️ ОБНОВИ ЭТУ ССЫЛКУ!
         // ==========================================
         const API_URL = "https://script.google.com/macros/s/AKfycby5JLTxemN8nWZclICGpJ0TxYLUkcNqcZN8pF31-wLnkQddgZ_GtkofM5s-QHQADLon3g/exec";
 
-        // ==========================================
         const tg = window.Telegram.WebApp;
         tg.expand();
         tg.enableClosingConfirmation();
-
-        // Тестовый ID для браузера, в Телеграме возьмется настоящий
         const userId = tg.initDataUnsafe?.user?.id || 1438120200; 
 
-        // Локальный каталог (должен совпадать с Google Script)
+        if(tg.initDataUnsafe?.user) {
+            document.getElementById('user-name-display').innerText = tg.initDataUnsafe.user.first_name;
+            if (tg.initDataUnsafe.user.photo_url) {
+                document.getElementById('user-ava').src = tg.initDataUnsafe.user.photo_url;
+            }
+        }
+
+        // ⚠️ ОБНОВЛЕННЫЙ КАТАЛОГ ДЛЯ САЙТА (ПОСТАВЬ ТУТ ЦЕНЫ)
         const CATALOG = {
             'bs': [
                 {id:"bs_30", n:"30 Гемов", p:150},
@@ -417,60 +458,63 @@
                 {id:"bs_170", n:"170 Гемов", p:650},
                 {id:"bs_360", n:"360 Гемов", p:1200},
                 {id:"bs_950", n:"950 Гемов", p:3000},
-                {id:"bs_2000", n:"2000 Гемов", p:5500}
+                {id:"bs_2000", n:"2000 Гемов", p:5500},
+                {id:"bs_bp", n:"Brawl Pass", p:0}, // ⚠️ ЦЕНА
+                {id:"bs_bp_plus", n:"Brawl Pass Plus", p:0}, // ⚠️ ЦЕНА
+                {id:"bs_upg", n:"Upgrade to Plus", p:0} // ⚠️ ЦЕНА
             ],
             'pubg': [
-                {id:"pubg_60", n:"60 UC", p:90},
-                {id:"pubg_325", n:"325 UC", p:450},
-                {id:"pubg_660", n:"660 UC", p:850},
-                {id:"pubg_1800", n:"1800 UC", p:2100}
+                {id:"pubg_100", n:"100 G-Coin", p:0}, // ⚠️ ЦЕНА
+                {id:"pubg_510", n:"510 G-Coin", p:0}, // ⚠️ ЦЕНА
+                {id:"pubg_1050", n:"1050 G-Coin", p:0}, // ⚠️ ЦЕНА
+                {id:"pubg_2700", n:"2700 G-Coin", p:0}, // ⚠️ ЦЕНА
+                {id:"pubg_5500", n:"5500 G-Coin", p:0}, // ⚠️ ЦЕНА
+                {id:"pubg_11200", n:"11200 G-Coin", p:0} // ⚠️ ЦЕНА
             ],
             'fn': [
                 {id:"fn_1000", n:"1000 V-Bucks", p:800},
                 {id:"fn_2800", n:"2800 V-Bucks", p:1900},
-                {id:"fn_5000", n:"5000 V-Bucks", p:3200}
+                {id:"fn_5000", n:"5000 V-Bucks", p:3200},
+                {id:"fn_13500", n:"13500 V-Bucks", p:0} // ⚠️ ЦЕНА
             ],
             'bl': [
-                {id:"bl_100", n:"100 Gold", p:100},
-                {id:"bl_500", n:"500 Gold", p:450},
-                {id:"bl_1000", n:"1000 Gold", p:850}
+                {id:"bl_105", n:"105 Gold", p:0}, // ⚠️ ЦЕНА
+                {id:"bl_320", n:"320 Gold", p:0}, // ⚠️ ЦЕНА
+                {id:"bl_540", n:"540 Gold", p:0}, // ⚠️ ЦЕНА
+                {id:"bl_1100", n:"1100 Gold", p:0}, // ⚠️ ЦЕНА
+                {id:"bl_2260", n:"2260 Gold", p:0}, // ⚠️ ЦЕНА
+                {id:"bl_5800", n:"5800 Gold", p:0} // ⚠️ ЦЕНА
             ]
         };
 
         let cartSum = 0;
 
-        // --- INIT ---
         async function init() {
             try {
-                // Запрос к GAS
                 const res = await fetch(API_URL, {
                     method: "POST",
                     body: JSON.stringify({ action: "getUserInfo", userId: userId })
                 });
                 const data = await res.json();
                 
-                // Убираем лоадер
                 document.getElementById("loader").style.opacity = '0';
                 setTimeout(() => document.getElementById("loader").style.display='none', 500);
 
                 if (data.status === "ok") {
-                    // Обновляем баланс
                     animateBalance(0, data.user.balance);
-                    
-                    // Обновляем реквизиты
-                    document.getElementById("d-bank").innerText = data.requisites.bank;
-                    document.getElementById("d-card").innerText = data.requisites.card;
-                    document.getElementById("d-crypto").innerText = data.requisites.crypto;
-                    
+                    if(data.requisites) {
+                        document.getElementById("d-bank").innerText = data.requisites.bank;
+                        document.getElementById("d-card").innerText = data.requisites.card;
+                        document.getElementById("d-crypto").innerText = data.requisites.crypto;
+                    }
                     updateCart();
                 }
             } catch (e) {
                 console.error(e);
-                tg.showAlert("Ошибка подключения к серверу. Проверьте интернет или повторите позже.");
+                document.getElementById("loader").style.display='none';
             }
         }
 
-        // --- NAVIGATION & UI ---
         function openGame(key, name) {
             haptic('light');
             document.getElementById("game-title").innerText = name;
@@ -478,6 +522,9 @@
             container.innerHTML = "";
             
             CATALOG[key].forEach(item => {
+                // Если цена 0 - пишем "Уточняйте"
+                const priceDisplay = item.p > 0 ? `${item.p} ₽` : "Уточняйте";
+                
                 const div = document.createElement('div');
                 div.className = 'item-row';
                 div.innerHTML = `
@@ -486,7 +533,7 @@
                         <small style="color:#8b95a5">Моментальная доставка</small>
                     </div>
                     <div style="text-align:right">
-                        <div class="item-price">${item.p} ₽</div>
+                        <div class="item-price">${priceDisplay}</div>
                         <button class="btn btn-primary" style="margin-top:5px; padding:6px 12px; font-size:12px" onclick="addToCart('${item.id}')">
                             Купить
                         </button>
@@ -511,7 +558,6 @@
         function togglePayDetails(el) {
             document.querySelectorAll('.pay-method').forEach(i => i.classList.remove('active'));
             document.querySelectorAll('.pay-details').forEach(i => i.style.display = 'none');
-            
             el.classList.add('active');
             el.querySelector('.pay-details').style.display = 'block';
         }
@@ -521,12 +567,9 @@
             tg.openTelegramLink(url);
         }
 
-        // --- CART LOGIC ---
         async function addToCart(code) {
             haptic('medium');
-            // Анимация кнопки
             tg.MainButton.showProgress();
-            
             try {
                 await fetch(API_URL, { 
                     method: "POST", 
@@ -544,7 +587,6 @@
             const res = await fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "getCart", userId: userId }) });
             const data = await res.json();
             cartSum = data.total;
-            
             const cartBar = document.getElementById("cart-bar");
             if (cartSum > 0) {
                 cartBar.classList.add("show");
@@ -567,7 +609,7 @@
                 const data = await res.json();
                 
                 if (data.status === "ok") {
-                    tg.showPopup({ title: 'Оплачено!', message: 'Заказ передан оператору. Ожидайте.', buttons: [{type:'ok'}] });
+                    tg.showPopup({ title: 'Оплачено!', message: 'Заказ передан оператору.', buttons: [{type:'ok'}] });
                     location.reload();
                 } else {
                     tg.showAlert("Ошибка: " + data.message);
@@ -583,7 +625,6 @@
             else tg.showAlert("Корзина пуста");
         }
 
-        // --- UTILS ---
         function haptic(style) {
             if(tg.HapticFeedback) tg.HapticFeedback.impactOccurred(style);
         }
@@ -592,7 +633,6 @@
             const el = document.getElementById("balance");
             let current = start;
             const step = Math.ceil((end - start) / 20);
-            
             const timer = setInterval(() => {
                 current += step;
                 if(current >= end) {
@@ -611,9 +651,7 @@
             event.stopPropagation();
         }
 
-        // Запуск
         init();
-
     </script>
 </body>
 </html>
