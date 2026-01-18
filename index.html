@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Nexus Store</title>
+    <title>Inventory Store</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -16,208 +16,107 @@
             --btn-gradient: linear-gradient(90deg, #4776E6 0%, #8E54E9 100%);
             --radius: 16px;
         }
-
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        
-        body {
-            background-color: var(--bg-body);
-            color: var(--text-main);
-            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
-            margin: 0;
-            padding: 0;
-            padding-bottom: 100px;
-        }
+        body { background-color: var(--bg-body); color: var(--text-main); font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, Roboto, sans-serif; margin: 0; padding: 0; padding-bottom: 100px; }
 
         /* HEADER */
-        .header {
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(14, 17, 23, 0.95);
-            backdrop-filter: blur(10px);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-
+        .header { padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; background: rgba(14, 17, 23, 0.95); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(255,255,255,0.05); }
         .user-info { display: flex; align-items: center; gap: 10px; }
         .user-avatar { width: 32px; height: 32px; background: var(--accent-gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 14px;}
-        .balance-badge {
-            background: rgba(76, 217, 100, 0.15);
-            color: #4cd964;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 13px;
-            border: 1px solid rgba(76, 217, 100, 0.2);
-        }
+        .balance-container { display: flex; align-items: center; gap: 5px; }
+        .balance-badge { background: rgba(76, 217, 100, 0.15); color: #4cd964; padding: 5px 12px; border-radius: 20px; font-weight: 600; font-size: 13px; border: 1px solid rgba(76, 217, 100, 0.2); }
+        .btn-deposit { background: var(--btn-gradient); width: 28px; height: 28px; border-radius: 50%; border: none; color: white; display: flex; align-items: center; justify-content: center; font-size: 16px; cursor: pointer; }
 
         /* WELCOME */
-        .welcome-card {
-            margin: 20px;
-            background: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 100%);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: var(--radius);
-            padding: 20px;
-            text-align: center;
-        }
+        .welcome-card { margin: 20px; background: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 100%); border: 1px solid rgba(255,255,255,0.1); border-radius: var(--radius); padding: 20px; text-align: center; }
         .welcome-title { font-size: 20px; font-weight: 700; margin-bottom: 5px; }
         .welcome-text { font-size: 13px; color: var(--text-sec); }
 
-        /* QUICK MENU (NEW) */
-        .quick-menu {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 10px;
-            padding: 0 20px;
-            margin-bottom: 25px;
-        }
-
-        .menu-item {
-            background: var(--bg-card);
-            border-radius: 12px;
-            padding: 15px 10px;
-            text-align: center;
-            cursor: pointer;
-            border: 1px solid rgba(255,255,255,0.05);
-            transition: 0.2s;
-        }
+        /* MENU */
+        .quick-menu { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; padding: 0 20px; margin-bottom: 25px; }
+        .menu-item { background: var(--bg-card); border-radius: 12px; padding: 15px 10px; text-align: center; cursor: pointer; border: 1px solid rgba(255,255,255,0.05); transition: 0.2s; }
         .menu-item:active { transform: scale(0.95); background: rgba(255,255,255,0.1); }
-        
         .menu-icon { font-size: 20px; margin-bottom: 8px; color: #a4b0be; }
-        .menu-text { font-size: 12px; font-weight: 600; color: var(--text-main); }
+        .menu-text { font-size: 12px; font-weight: 600; }
 
-        /* GAMES GRID */
+        /* GAMES */
         .section-title { font-size: 18px; font-weight: 700; margin: 0 20px 15px; }
-        
-        .games-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            padding: 0 20px;
-        }
-
-        .game-card {
-            background: var(--bg-card);
-            border-radius: var(--radius);
-            overflow: hidden;
-            position: relative;
-            height: 140px;
-            cursor: pointer;
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-        .game-card:active { transform: scale(0.97); }
-
+        .games-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 20px; }
+        .game-card { background: var(--bg-card); border-radius: var(--radius); overflow: hidden; position: relative; height: 140px; cursor: pointer; border: 1px solid rgba(255,255,255,0.05); }
         .game-banner { height: 100%; width: 100%; position: absolute; background-size: cover; background-position: center; }
-        .overlay {
-            position: absolute; bottom: 0; width: 100%; padding: 15px;
-            background: linear-gradient(0deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%);
-        }
+        .overlay { position: absolute; bottom: 0; width: 100%; padding: 15px; background: linear-gradient(0deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%); }
         .game-name { font-weight: 700; font-size: 15px; display: flex; justify-content: space-between; }
 
         /* ITEM PAGE */
         #game-page { display: none; padding: 20px; min-height: 100vh; background: var(--bg-body); position: fixed; top: 0; left: 0; width: 100%; z-index: 200; overflow-y: auto; padding-bottom: 100px; }
-        
-        .back-btn {
-            width: 40px; height: 40px; background: var(--bg-card); border-radius: 12px;
-            display: flex; align-items: center; justify-content: center;
-            margin-bottom: 20px; cursor: pointer; border: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .item-row {
-            background: var(--bg-card);
-            padding: 12px 15px;
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border: 1px solid rgba(255,255,255,0.03);
-            margin-bottom: 10px;
-        }
-        
+        .back-btn { width: 40px; height: 40px; background: var(--bg-card); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); }
+        .item-row { background: var(--bg-card); padding: 12px 15px; border-radius: 14px; display: flex; align-items: center; justify-content: space-between; border: 1px solid rgba(255,255,255,0.03); margin-bottom: 10px; }
         .item-info { display: flex; align-items: center; gap: 15px; }
         .item-icon { font-size: 24px; }
         .item-title { font-weight: 600; font-size: 14px; }
         .item-price { font-size: 13px; color: #4776E6; font-weight: 700; }
+        .btn-add { background: var(--btn-gradient); border: none; color: white; padding: 8px 16px; border-radius: 8px; font-weight: 600; font-size: 12px; cursor: pointer; }
 
-        .btn-add {
-            background: var(--btn-gradient);
-            border: none; color: white; padding: 8px 16px; border-radius: 8px; font-weight: 600; font-size: 12px; cursor: pointer;
-        }
+        /* DEPOSIT MODAL */
+        #deposit-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 900; align-items: center; justify-content: center; padding: 20px; }
+        .modal-card { background: var(--bg-card); width: 100%; max-width: 350px; border-radius: 20px; padding: 20px; position: relative; border: 1px solid rgba(255,255,255,0.1); }
+        .close-modal { position: absolute; top: 15px; right: 15px; cursor: pointer; font-size: 20px; color: #888; }
+        .method-row { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px; margin-bottom: 10px; cursor: pointer; display: flex; align-items: center; gap: 10px; }
+        .method-info { font-size: 13px; color: #aaa; margin-top: 5px; display: none; }
+        .method-row.active .method-info { display: block; }
 
         /* CART STICKY */
-        .cart-sticky {
-            position: fixed; bottom: 20px; left: 20px; right: 20px;
-            background: var(--bg-card);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 15px;
-            border-radius: 16px;
-            display: flex; justify-content: space-between; align-items: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            z-index: 500;
-            display: none;
-        }
+        .cart-sticky { position: fixed; bottom: 20px; left: 20px; right: 20px; background: var(--bg-card); border: 1px solid rgba(255,255,255,0.1); padding: 15px; border-radius: 16px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 500; display: none; }
         .cart-total { font-weight: 700; font-size: 16px; }
-        .btn-checkout {
-            background: var(--btn-gradient);
-            border: none; padding: 10px 20px; border-radius: 10px;
-            color: white; font-weight: 700;
-        }
+        .btn-checkout { background: var(--btn-gradient); border: none; padding: 10px 20px; border-radius: 10px; color: white; font-weight: 700; }
 
     </style>
 </head>
 <body>
 
-    <!-- MAIN SCREEN -->
     <div id="main-screen">
         <div class="header">
             <div class="user-info">
-                <div class="user-avatar" id="avatar">U</div>
-                <div style="font-weight: 600; font-size: 14px;">InventoryStore</div>
+                <div class="user-avatar" id="avatar">I</div>
+                <div style="font-weight: 600; font-size: 14px;">Inventory Store</div>
             </div>
-            <div class="balance-badge" id="balance">... ₽</div>
+            <div class="balance-container">
+                <div class="balance-badge" id="balance">... ₽</div>
+                <button class="btn-deposit" onclick="openDeposit()">+</button>
+            </div>
         </div>
 
         <div class="welcome-card">
-            <div class="welcome-title">Добро пожаловать! 👋</div>
-            <div class="welcome-text">Безопасный донат и низкие цены ждут тебя.</div>
+            <div class="welcome-title">Inventory Store 🚀</div>
+            <div class="welcome-text">Безопасный донат, лучшие цены и быстрая выдача.</div>
         </div>
 
-        <!-- NEW: MENU BUTTONS -->
         <div class="quick-menu">
             <div class="menu-item" onclick="openLink('https://t.me/InventoryStoreReviews')">
-                <div class="menu-icon"><i class="fas fa-star"></i></div>
-                <div class="menu-text">Отзывы</div>
+                <div class="menu-icon"><i class="fas fa-star"></i></div><div class="menu-text">Отзывы</div>
             </div>
             <div class="menu-item" onclick="openLink('https://t.me/dimakovboi')">
-                <div class="menu-icon"><i class="fas fa-headset"></i></div>
-                <div class="menu-text">Поддержка</div>
+                <div class="menu-icon"><i class="fas fa-headset"></i></div><div class="menu-text">Поддержка</div>
             </div>
             <div class="menu-item" onclick="checkCartManually()">
-                <div class="menu-icon"><i class="fas fa-shopping-cart"></i></div>
-                <div class="menu-text">Корзина</div>
+                <div class="menu-icon"><i class="fas fa-shopping-cart"></i></div><div class="menu-text">Корзина</div>
             </div>
         </div>
 
-        <div class="section-title">Каталог игр</div>
+        <div class="section-title">Каталог</div>
         <div class="games-grid">
             <div class="game-card" onclick="openGame('bs', 'Brawl Stars')">
                 <div class="game-banner" style="background-image: url('https://wallpapers.com/images/hd/brawl-stars-loading-screen-w9r17f7q2z3q5w1f.jpg');"></div>
                 <div class="overlay"><div class="game-name">Brawl Stars <i class="fas fa-chevron-right"></i></div></div>
             </div>
-
             <div class="game-card" onclick="openGame('pubg', 'PUBG Mobile')">
                 <div class="game-banner" style="background-image: url('https://w0.peakpx.com/wallpaper/774/267/HD-wallpaper-pubg-mobile-game-logo.jpg');"></div>
                 <div class="overlay"><div class="game-name">PUBG Mobile <i class="fas fa-chevron-right"></i></div></div>
             </div>
-
             <div class="game-card" onclick="openGame('fn', 'Fortnite')">
                 <div class="game-banner" style="background-image: url('https://wallpapers.com/images/hd/fortnite-llama-loot-box-3d-4k-wallpaper-p2j07d3w5x2c1x1f.jpg');"></div>
                 <div class="overlay"><div class="game-name">Fortnite <i class="fas fa-chevron-right"></i></div></div>
             </div>
-
             <div class="game-card" onclick="openGame('bl', 'Blood Strike')">
                 <div class="game-banner" style="background-image: url('https://play-lh.googleusercontent.com/9C0d6b_wXyqQf8m6d9c6x2d9x2d9x2d9x2d9x2d9x2d9x2d9x2d9x2d9x2d9x2d9x2d9x2d9=w526-h296-rw');"></div>
                 <div class="overlay"><div class="game-name">Blood Strike <i class="fas fa-chevron-right"></i></div></div>
@@ -232,12 +131,32 @@
         <div id="items-container"></div>
     </div>
 
-    <!-- CART PANEL -->
-    <div class="cart-sticky" id="cart-panel">
-        <div>
-            <div style="font-size: 12px; color: #aaa;">К оплате:</div>
-            <div class="cart-total" id="cart-total">0 ₽</div>
+    <!-- DEPOSIT MODAL -->
+    <div id="deposit-modal">
+        <div class="modal-card">
+            <div class="close-modal" onclick="closeDeposit()">×</div>
+            <h3 style="margin-top:0">Пополнение баланса</h3>
+            
+            <div class="method-row" onclick="toggleMethod(this)">
+                <div>💳</div> <div style="font-weight:600">Банковская карта</div>
+                <div class="method-info" id="info-card">Банк: Беларусбанк<br>Номер: 0000 0000 0000 0000<br><small>Скиньте скриншот в поддержку!</small></div>
+            </div>
+
+            <div class="method-row" onclick="toggleMethod(this)">
+                <div>💎</div> <div style="font-weight:600">Криптовалюта</div>
+                <div class="method-info" id="info-crypto">USDT/TON (TON Network)<br>Адрес: UQAsak...VzcJ<br><small>Скиньте скриншот в поддержку!</small></div>
+            </div>
+
+            <div class="method-row" onclick="tg.close()">
+                <div>⭐️</div> <div style="font-weight:600">Telegram Stars</div>
+                <div class="method-info" style="display:block; color:#4776E6">Нажмите, чтобы перейти в бота</div>
+            </div>
         </div>
+    </div>
+
+    <!-- CART -->
+    <div class="cart-sticky" id="cart-panel">
+        <div><div style="font-size: 12px; color: #aaa;">К оплате:</div><div class="cart-total" id="cart-total">0 ₽</div></div>
         <button class="btn-checkout" onclick="checkout()">Купить</button>
     </div>
 
@@ -246,7 +165,7 @@
         tg.expand();
         tg.enableClosingConfirmation();
 
-        // ⚠️ ТВОЯ ССЫЛКА
+        // ⚠️ ЗАМЕНИ НА СВОЮ ССЫЛКУ /exec
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwAWX4odl38fRxD_eyPJdfNVyUK5S5TLg0iNJPvQpkb4lTF1GxjSe-sAUQnqOHXG7Q/exec";
 
         const userId = tg.initDataUnsafe?.user?.id || 1438120200;
@@ -254,80 +173,47 @@
         document.getElementById("avatar").innerText = firstName.charAt(0);
 
         const CATALOG = {
-            'bs': [
-                { id: "bs_30", name: "30 Гемов", price: 150, icon: "💎" },
-                { id: "bs_80", name: "80 Гемов", price: 350, icon: "💎" },
-                { id: "bs_170", name: "170 Гемов", price: 650, icon: "💎" },
-                { id: "bs_360", name: "360 Гемов", price: 1200, icon: "💎" },
-                { id: "bs_950", name: "950 Гемов", price: 3000, icon: "💎" },
-                { id: "bs_2000", name: "2000 Гемов", price: 5500, icon: "💎" }
-            ],
-            'pubg': [
-                { id: "pubg_60", name: "60 G-Coin", price: 90, icon: "💵" },
-                { id: "pubg_325", name: "325 G-Coin", price: 450, icon: "💵" },
-                { id: "pubg_660", name: "660 G-Coin", price: 850, icon: "💵" },
-                { id: "pubg_1800", name: "1800 G-Coin", price: 2100, icon: "💵" }
-            ],
-            'fn': [
-                { id: "fn_1000", name: "1000 V-Bucks", price: 800, icon: "⛏" },
-                { id: "fn_2800", name: "2800 V-Bucks", price: 1900, icon: "⛏" },
-                { id: "fn_5000", name: "5000 V-Bucks", price: 3200, icon: "⛏" }
-            ],
-            'bl': [
-                { id: "bl_100", name: "100 Gold", price: 100, icon: "🩸" },
-                { id: "bl_500", name: "500 Gold", price: 450, icon: "🩸" },
-                { id: "bl_1000", name: "1000 Gold", price: 850, icon: "🩸" }
-            ]
+            'bs': [{id:"bs_30",name:"30 Гемов",price:150,icon:"💎"},{id:"bs_80",name:"80 Гемов",price:350,icon:"💎"},{id:"bs_170",name:"170 Гемов",price:650,icon:"💎"},{id:"bs_360",name:"360 Гемов",price:1200,icon:"💎"},{id:"bs_950",name:"950 Гемов",price:3000,icon:"💎"},{id:"bs_2000",name:"2000 Гемов",price:5500,icon:"💎"}],
+            'pubg': [{id:"pubg_60",name:"60 UC",price:90,icon:"💵"},{id:"pubg_325",name:"325 UC",price:450,icon:"💵"},{id:"pubg_660",name:"660 UC",price:850,icon:"💵"},{id:"pubg_1800",name:"1800 UC",price:2100,icon:"💵"}],
+            'fn': [{id:"fn_1000",name:"1000 V-Bucks",price:800,icon:"⛏"},{id:"fn_2800",name:"2800 V-Bucks",price:1900,icon:"⛏"},{id:"fn_5000",name:"5000 V-Bucks",price:3200,icon:"⛏"}],
+            'bl': [{id:"bl_100",name:"100 Gold",price:100,icon:"🩸"},{id:"bl_500",name:"500 Gold",price:450,icon:"🩸"},{id:"bl_1000",name:"1000 Gold",price:850,icon:"🩸"}]
         };
 
         let currentCartTotal = 0;
 
         async function init() {
             try {
-                const res = await fetch(SCRIPT_URL, {
-                    method: "POST",
-                    body: JSON.stringify({ action: "getUserInfo", userId: userId })
-                });
+                const res = await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "getUserInfo", userId: userId }) });
                 const data = await res.json();
                 if(data.status === "ok") {
                     document.getElementById("balance").innerText = data.user.balance + " ₽";
+                    document.getElementById("info-card").innerHTML = `Банк: ${data.payment.bank}<br>Карта: ${data.payment.card}<br><small>Скиньте скриншот!</small>`;
+                    document.getElementById("info-crypto").innerHTML = `USDT/TON<br>Адрес: ${data.payment.crypto.substring(0,10)}...<br><small>Скиньте скриншот!</small>`;
                     updateCartUI();
                 }
             } catch (e) {}
         }
 
-        // ОТКРЫТИЕ ССЫЛОК
-        function openLink(url) {
-            tg.openTelegramLink(url);
-        }
-
+        function openLink(url) { tg.openTelegramLink(url); }
         function openGame(type, title) {
             document.getElementById("game-title").innerText = title;
-            const container = document.getElementById("items-container");
-            container.innerHTML = "";
-            CATALOG[type].forEach(item => {
-                container.innerHTML += `
-                    <div class="item-row">
-                        <div class="item-info">
-                            <div class="item-icon">${item.icon}</div>
-                            <div>
-                                <div class="item-title">${item.name}</div>
-                                <div class="item-price">${item.price} ₽</div>
-                            </div>
-                        </div>
-                        <button class="btn-add" onclick="addToCart('${item.id}')">Купить</button>
-                    </div>
-                `;
+            const c = document.getElementById("items-container"); c.innerHTML = "";
+            CATALOG[type].forEach(i => {
+                c.innerHTML += `<div class="item-row"><div class="item-info"><div class="item-icon">${i.icon}</div><div><div class="item-title">${i.name}</div><div class="item-price">${i.price} ₽</div></div></div><button class="btn-add" onclick="addToCart('${i.id}')">Купить</button></div>`;
             });
             document.getElementById("game-page").style.display = "block";
             window.scrollTo(0,0);
         }
-
-        function closeGame() {
-            document.getElementById("game-page").style.display = "none";
+        function closeGame() { document.getElementById("game-page").style.display = "none"; }
+        
+        // PAYMENTS
+        function openDeposit() { document.getElementById("deposit-modal").style.display = "flex"; }
+        function closeDeposit() { document.getElementById("deposit-modal").style.display = "none"; }
+        function toggleMethod(el) {
+            document.querySelectorAll('.method-info').forEach(e => e.style.display = 'none');
+            el.querySelector('.method-info').style.display = 'block';
         }
 
-        // КОРЗИНА
         async function addToCart(code) {
             tg.HapticFeedback.impactOccurred('light');
             tg.MainButton.showProgress();
@@ -350,13 +236,7 @@
             }
         }
 
-        function checkCartManually() {
-            if (currentCartTotal > 0) {
-                tg.showAlert("У вас в корзине товаров на " + currentCartTotal + " ₽.\nНажмите кнопку 'Купить' внизу экрана.");
-            } else {
-                tg.showAlert("Корзина пуста 🛒");
-            }
-        }
+        function checkCartManually() { if (currentCartTotal > 0) tg.showAlert("Сумма: " + currentCartTotal + " ₽. Оплата внизу."); else tg.showAlert("Корзина пуста"); }
 
         async function checkout() {
             if(!confirm(`Списать ${currentCartTotal} ₽?`)) return;
@@ -364,12 +244,7 @@
             const res = await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "payCart", userId: userId }) });
             const data = await res.json();
             tg.MainButton.hideProgress();
-            if(data.status === "ok") {
-                tg.showAlert("Успешно! Ожидайте выдачи.");
-                location.reload();
-            } else {
-                tg.showAlert("Ошибка: " + data.message);
-            }
+            if(data.status === "ok") { tg.showAlert("Успешно! Друг уведомлен."); location.reload(); } else { tg.showAlert("Ошибка: " + data.message); }
         }
 
         init();
