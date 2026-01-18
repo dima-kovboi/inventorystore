@@ -12,240 +12,218 @@
             --bg-card: #161b28;
             --text-main: #ffffff;
             --text-sec: #8b95a5;
-            --accent-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --btn-gradient: linear-gradient(90deg, #4776E6 0%, #8E54E9 100%);
-            --radius: 16px;
+            --accent: #6c5ce7;
+            --btn-grad: linear-gradient(90deg, #6c5ce7, #a29bfe);
         }
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { background-color: var(--bg-body); color: var(--text-main); font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, Roboto, sans-serif; margin: 0; padding: 0; padding-bottom: 100px; }
-
+        body { background: var(--bg-body); color: var(--text-main); font-family: sans-serif; margin: 0; padding: 0; padding-bottom: 80px; }
+        
         /* HEADER */
-        .header { padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; background: rgba(14, 17, 23, 0.95); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .user-info { display: flex; align-items: center; gap: 10px; }
-        .user-avatar { width: 32px; height: 32px; background: var(--accent-gradient); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 14px;}
-        .balance-container { display: flex; align-items: center; gap: 5px; }
-        .balance-badge { background: rgba(76, 217, 100, 0.15); color: #4cd964; padding: 5px 12px; border-radius: 20px; font-weight: 600; font-size: 13px; border: 1px solid rgba(76, 217, 100, 0.2); }
-        .btn-deposit { background: var(--btn-gradient); width: 28px; height: 28px; border-radius: 50%; border: none; color: white; display: flex; align-items: center; justify-content: center; font-size: 16px; cursor: pointer; }
-
-        /* WELCOME */
-        .welcome-card { margin: 20px; background: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 100%); border: 1px solid rgba(255,255,255,0.1); border-radius: var(--radius); padding: 20px; text-align: center; }
-        .welcome-title { font-size: 20px; font-weight: 700; margin-bottom: 5px; }
-        .welcome-text { font-size: 13px; color: var(--text-sec); }
+        .header { padding: 15px; display: flex; justify-content: space-between; align-items: center; background: rgba(22, 27, 40, 0.9); position: sticky; top: 0; z-index: 100; backdrop-filter: blur(10px); }
+        .balance { background: rgba(108, 92, 231, 0.2); color: #a29bfe; padding: 5px 12px; border-radius: 20px; font-weight: bold; font-size: 14px; border: 1px solid rgba(108, 92, 231, 0.3); }
+        .plus-btn { background: var(--accent); color: white; border: none; width: 24px; height: 24px; border-radius: 50%; margin-left: 5px; cursor: pointer; }
 
         /* MENU */
-        .quick-menu { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; padding: 0 20px; margin-bottom: 25px; }
-        .menu-item { background: var(--bg-card); border-radius: 12px; padding: 15px 10px; text-align: center; cursor: pointer; border: 1px solid rgba(255,255,255,0.05); transition: 0.2s; }
-        .menu-item:active { transform: scale(0.95); background: rgba(255,255,255,0.1); }
-        .menu-icon { font-size: 20px; margin-bottom: 8px; color: #a4b0be; }
-        .menu-text { font-size: 12px; font-weight: 600; }
+        .menu-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; padding: 15px; }
+        .menu-item { background: var(--bg-card); padding: 10px; border-radius: 12px; text-align: center; font-size: 12px; font-weight: bold; cursor: pointer; }
+        .menu-item i { font-size: 18px; margin-bottom: 5px; display: block; color: #a29bfe; }
 
         /* GAMES */
-        .section-title { font-size: 18px; font-weight: 700; margin: 0 20px 15px; }
-        .games-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 20px; }
-        .game-card { background: var(--bg-card); border-radius: var(--radius); overflow: hidden; position: relative; height: 140px; cursor: pointer; border: 1px solid rgba(255,255,255,0.05); }
-        .game-banner { height: 100%; width: 100%; position: absolute; background-size: cover; background-position: center; }
-        .overlay { position: absolute; bottom: 0; width: 100%; padding: 15px; background: linear-gradient(0deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%); }
-        .game-name { font-weight: 700; font-size: 15px; display: flex; justify-content: space-between; }
+        .games-title { margin: 10px 15px; font-size: 18px; font-weight: bold; }
+        .games-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 15px; }
+        .game-card { background: var(--bg-card); border-radius: 15px; height: 120px; position: relative; overflow: hidden; cursor: pointer; }
+        .game-bg { width: 100%; height: 100%; object-fit: cover; opacity: 0.6; transition: 0.3s; }
+        .game-card:active .game-bg { opacity: 0.4; transform: scale(1.05); }
+        .game-name { position: absolute; bottom: 10px; left: 10px; font-weight: bold; text-shadow: 0 2px 4px black; }
 
-        /* ITEM PAGE */
-        #game-page { display: none; padding: 20px; min-height: 100vh; background: var(--bg-body); position: fixed; top: 0; left: 0; width: 100%; z-index: 200; overflow-y: auto; padding-bottom: 100px; }
-        .back-btn { width: 40px; height: 40px; background: var(--bg-card); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); }
-        .item-row { background: var(--bg-card); padding: 12px 15px; border-radius: 14px; display: flex; align-items: center; justify-content: space-between; border: 1px solid rgba(255,255,255,0.03); margin-bottom: 10px; }
-        .item-info { display: flex; align-items: center; gap: 15px; }
-        .item-icon { font-size: 24px; }
-        .item-title { font-weight: 600; font-size: 14px; }
-        .item-price { font-size: 13px; color: #4776E6; font-weight: 700; }
-        .btn-add { background: var(--btn-gradient); border: none; color: white; padding: 8px 16px; border-radius: 8px; font-weight: 600; font-size: 12px; cursor: pointer; }
+        /* ITEMS PAGE */
+        #page-items { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: var(--bg-body); z-index: 200; overflow-y: auto; padding: 15px; padding-bottom: 100px; }
+        .item-row { background: var(--bg-card); padding: 10px; border-radius: 12px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+        .buy-btn { background: var(--btn-grad); border: none; color: white; padding: 6px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; }
 
-        /* DEPOSIT MODAL */
-        #deposit-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 900; align-items: center; justify-content: center; padding: 20px; }
-        .modal-card { background: var(--bg-card); width: 100%; max-width: 350px; border-radius: 20px; padding: 20px; position: relative; border: 1px solid rgba(255,255,255,0.1); }
-        .close-modal { position: absolute; top: 15px; right: 15px; cursor: pointer; font-size: 20px; color: #888; }
-        .method-row { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 12px; margin-bottom: 10px; cursor: pointer; display: flex; align-items: center; gap: 10px; }
-        .method-info { font-size: 13px; color: #aaa; margin-top: 5px; display: none; }
-        .method-row.active .method-info { display: block; }
+        /* CART */
+        .cart-bar { position: fixed; bottom: 20px; left: 20px; right: 20px; background: var(--bg-card); padding: 15px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 5px 20px rgba(0,0,0,0.5); z-index: 300; display: none; border: 1px solid #333; }
+        .checkout-btn { background: #4cd964; border: none; color: white; padding: 10px 20px; border-radius: 10px; font-weight: bold; cursor: pointer; }
 
-        /* CART STICKY */
-        .cart-sticky { position: fixed; bottom: 20px; left: 20px; right: 20px; background: var(--bg-card); border: 1px solid rgba(255,255,255,0.1); padding: 15px; border-radius: 16px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 500; display: none; }
-        .cart-total { font-weight: 700; font-size: 16px; }
-        .btn-checkout { background: var(--btn-gradient); border: none; padding: 10px 20px; border-radius: 10px; color: white; font-weight: 700; }
+        /* MODAL */
+        #modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 500; align-items: center; justify-content: center; padding: 20px; box-sizing: border-box; }
+        .modal-box { background: var(--bg-card); width: 100%; border-radius: 20px; padding: 20px; max-width: 350px; position: relative; }
+        .close { position: absolute; top: 15px; right: 15px; font-size: 24px; cursor: pointer; }
+        .pay-method { padding: 15px; background: rgba(255,255,255,0.05); border-radius: 10px; margin-bottom: 10px; cursor: pointer; }
+        .pay-details { display: none; font-size: 13px; color: #ccc; margin-top: 5px; line-height: 1.4; }
+        .pay-method.active .pay-details { display: block; }
 
     </style>
 </head>
 <body>
 
-    <div id="main-screen">
+    <!-- HOME -->
+    <div id="home">
         <div class="header">
-            <div class="user-info">
-                <div class="user-avatar" id="avatar">I</div>
-                <div style="font-weight: 600; font-size: 14px;">Inventory Store</div>
-            </div>
-            <div class="balance-container">
-                <div class="balance-badge" id="balance">... ₽</div>
-                <button class="btn-deposit" onclick="openDeposit()">+</button>
+            <div style="font-weight: bold; font-size: 16px;">Inventory Store</div>
+            <div style="display: flex; align-items: center;">
+                <div class="balance" id="balance">Загрузка...</div>
+                <button class="plus-btn" onclick="openDeposit()">+</button>
             </div>
         </div>
 
-        <div class="welcome-card">
-            <div class="welcome-title">Inventory Store 🚀</div>
-            <div class="welcome-text">Безопасный донат, лучшие цены и быстрая выдача.</div>
+        <div class="menu-grid">
+            <div class="menu-item" onclick="openLink('https://t.me/InventoryStoreReviews')"><i class="fas fa-comment"></i>Отзывы</div>
+            <div class="menu-item" onclick="openLink('https://t.me/dimakovboi')"><i class="fas fa-headset"></i>Поддержка</div>
+            <div class="menu-item" onclick="showCartMsg()"><i class="fas fa-shopping-cart"></i>Корзина</div>
         </div>
 
-        <div class="quick-menu">
-            <div class="menu-item" onclick="openLink('https://t.me/InventoryStoreReviews')">
-                <div class="menu-icon"><i class="fas fa-star"></i></div><div class="menu-text">Отзывы</div>
-            </div>
-            <div class="menu-item" onclick="openLink('https://t.me/dimakovboi')">
-                <div class="menu-icon"><i class="fas fa-headset"></i></div><div class="menu-text">Поддержка</div>
-            </div>
-            <div class="menu-item" onclick="checkCartManually()">
-                <div class="menu-icon"><i class="fas fa-shopping-cart"></i></div><div class="menu-text">Корзина</div>
-            </div>
-        </div>
-
-        <div class="section-title">Каталог</div>
+        <div class="games-title">Каталог</div>
         <div class="games-grid">
             <div class="game-card" onclick="openGame('bs', 'Brawl Stars')">
-                <div class="game-banner" style="background-image: url('https://wallpapers.com/images/hd/brawl-stars-loading-screen-w9r17f7q2z3q5w1f.jpg');"></div>
-                <div class="overlay"><div class="game-name">Brawl Stars <i class="fas fa-chevron-right"></i></div></div>
+                <img src="https://wallpapers.com/images/hd/brawl-stars-loading-screen-w9r17f7q2z3q5w1f.jpg" class="game-bg">
+                <div class="game-name">Brawl Stars</div>
             </div>
             <div class="game-card" onclick="openGame('pubg', 'PUBG Mobile')">
-                <div class="game-banner" style="background-image: url('https://w0.peakpx.com/wallpaper/774/267/HD-wallpaper-pubg-mobile-game-logo.jpg');"></div>
-                <div class="overlay"><div class="game-name">PUBG Mobile <i class="fas fa-chevron-right"></i></div></div>
+                <img src="https://w0.peakpx.com/wallpaper/774/267/HD-wallpaper-pubg-mobile-game-logo.jpg" class="game-bg">
+                <div class="game-name">PUBG Mobile</div>
             </div>
             <div class="game-card" onclick="openGame('fn', 'Fortnite')">
-                <div class="game-banner" style="background-image: url('https://wallpapers.com/images/hd/fortnite-llama-loot-box-3d-4k-wallpaper-p2j07d3w5x2c1x1f.jpg');"></div>
-                <div class="overlay"><div class="game-name">Fortnite <i class="fas fa-chevron-right"></i></div></div>
+                <img src="https://wallpapers.com/images/hd/fortnite-llama-loot-box-3d-4k-wallpaper-p2j07d3w5x2c1x1f.jpg" class="game-bg">
+                <div class="game-name">Fortnite</div>
             </div>
             <div class="game-card" onclick="openGame('bl', 'Blood Strike')">
-                <div class="game-banner" style="background-image: url('https://play-lh.googleusercontent.com/9C0d6b_wXyqQf8m6d9c6x2d9x2d9x2d9x2d9x2d9x2d9x2d9x2d9x2d9x2d9x2d9x2d9x2d9=w526-h296-rw');"></div>
-                <div class="overlay"><div class="game-name">Blood Strike <i class="fas fa-chevron-right"></i></div></div>
+                <img src="https://play-lh.googleusercontent.com/9C0d6b_wXyqQf8m6d9c6x2d9x2d9x2d9x2d9x2d9x2d9x2d9x2d9x2d9x2d9x2d9x2d9x2d9=w526-h296-rw" class="game-bg">
+                <div class="game-name">Blood Strike</div>
             </div>
         </div>
     </div>
 
-    <!-- GAME PAGE -->
-    <div id="game-page">
-        <div class="back-btn" onclick="closeGame()"><i class="fas fa-arrow-left"></i></div>
-        <h2 id="game-title" style="margin: 0 0 20px;">Game</h2>
-        <div id="items-container"></div>
+    <!-- ITEMS -->
+    <div id="page-items">
+        <div style="font-size: 24px; cursor: pointer; margin-bottom: 20px;" onclick="document.getElementById('page-items').style.display='none'">← Назад</div>
+        <h2 id="game-title">Game</h2>
+        <div id="list"></div>
+    </div>
+
+    <!-- CART BAR -->
+    <div class="cart-bar" id="cart-bar">
+        <div>Итого: <b id="total">0 ₽</b></div>
+        <button class="checkout-btn" onclick="pay()">Оплатить</button>
     </div>
 
     <!-- DEPOSIT MODAL -->
-    <div id="deposit-modal">
-        <div class="modal-card">
-            <div class="close-modal" onclick="closeDeposit()">×</div>
-            <h3 style="margin-top:0">Пополнение баланса</h3>
+    <div id="modal">
+        <div class="modal-box">
+            <div class="close" onclick="document.getElementById('modal').style.display='none'">×</div>
+            <h3>Пополнение</h3>
             
-            <div class="method-row" onclick="toggleMethod(this)">
-                <div>💳</div> <div style="font-weight:600">Банковская карта</div>
-                <div class="method-info" id="info-card">Банк: Беларусбанк<br>Номер: 0000 0000 0000 0000<br><small>Скиньте скриншот в поддержку!</small></div>
+            <div class="pay-method" onclick="togglePay(this)">
+                💳 Банковская карта
+                <div class="pay-details" id="d-card">Загрузка...</div>
             </div>
-
-            <div class="method-row" onclick="toggleMethod(this)">
-                <div>💎</div> <div style="font-weight:600">Криптовалюта</div>
-                <div class="method-info" id="info-crypto">USDT/TON (TON Network)<br>Адрес: UQAsak...VzcJ<br><small>Скиньте скриншот в поддержку!</small></div>
+            <div class="pay-method" onclick="togglePay(this)">
+                💎 Криптовалюта
+                <div class="pay-details" id="d-crypto">Загрузка...</div>
             </div>
-
-            <div class="method-row" onclick="tg.close()">
-                <div>⭐️</div> <div style="font-weight:600">Telegram Stars</div>
-                <div class="method-info" style="display:block; color:#4776E6">Нажмите, чтобы перейти в бота</div>
+             <div class="pay-method" onclick="alert('Перейдите в бота для оплаты звездами!')">
+                ⭐️ Telegram Stars
+                <div class="pay-details" style="display:block">Нажмите, чтобы узнать как</div>
             </div>
         </div>
-    </div>
-
-    <!-- CART -->
-    <div class="cart-sticky" id="cart-panel">
-        <div><div style="font-size: 12px; color: #aaa;">К оплате:</div><div class="cart-total" id="cart-total">0 ₽</div></div>
-        <button class="btn-checkout" onclick="checkout()">Купить</button>
     </div>
 
     <script>
         const tg = window.Telegram.WebApp;
         tg.expand();
-        tg.enableClosingConfirmation();
 
-        // ⚠️ ЗАМЕНИ НА СВОЮ ССЫЛКУ /exec
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwAWX4odl38fRxD_eyPJdfNVyUK5S5TLg0iNJPvQpkb4lTF1GxjSe-sAUQnqOHXG7Q/exec";
+        // ⚠️ ВСТАВЬ НОВУЮ ССЫЛКУ /exec
+        const API_URL = "https://script.google.com/macros/s/AKfycbwAWX4odl38fRxD_eyPJdfNVyUK5S5TLg0iNJPvQpkb4lTF1GxjSe-sAUQnqOHXG7Q/exec";
 
-        const userId = tg.initDataUnsafe?.user?.id || 1438120200;
-        const firstName = tg.initDataUnsafe?.user?.first_name || "User";
-        document.getElementById("avatar").innerText = firstName.charAt(0);
-
+        const userId = tg.initDataUnsafe?.user?.id || 1438120200; // Для теста в браузере твой ID
+        
         const CATALOG = {
-            'bs': [{id:"bs_30",name:"30 Гемов",price:150,icon:"💎"},{id:"bs_80",name:"80 Гемов",price:350,icon:"💎"},{id:"bs_170",name:"170 Гемов",price:650,icon:"💎"},{id:"bs_360",name:"360 Гемов",price:1200,icon:"💎"},{id:"bs_950",name:"950 Гемов",price:3000,icon:"💎"},{id:"bs_2000",name:"2000 Гемов",price:5500,icon:"💎"}],
-            'pubg': [{id:"pubg_60",name:"60 UC",price:90,icon:"💵"},{id:"pubg_325",name:"325 UC",price:450,icon:"💵"},{id:"pubg_660",name:"660 UC",price:850,icon:"💵"},{id:"pubg_1800",name:"1800 UC",price:2100,icon:"💵"}],
-            'fn': [{id:"fn_1000",name:"1000 V-Bucks",price:800,icon:"⛏"},{id:"fn_2800",name:"2800 V-Bucks",price:1900,icon:"⛏"},{id:"fn_5000",name:"5000 V-Bucks",price:3200,icon:"⛏"}],
-            'bl': [{id:"bl_100",name:"100 Gold",price:100,icon:"🩸"},{id:"bl_500",name:"500 Gold",price:450,icon:"🩸"},{id:"bl_1000",name:"1000 Gold",price:850,icon:"🩸"}]
+            'bs': [{id:"bs_30",n:"30 Гемов",p:150},{id:"bs_80",n:"80 Гемов",p:350},{id:"bs_170",n:"170 Гемов",p:650},{id:"bs_360",n:"360 Гемов",p:1200},{id:"bs_950",n:"950 Гемов",p:3000},{id:"bs_2000",n:"2000 Гемов",p:5500}],
+            'pubg': [{id:"pubg_60",n:"60 UC",p:90},{id:"pubg_325",n:"325 UC",p:450},{id:"pubg_660",n:"660 UC",p:850},{id:"pubg_1800",n:"1800 UC",p:2100}],
+            'fn': [{id:"fn_1000",n:"1000 V-Bucks",p:800},{id:"fn_2800",n:"2800 V-Bucks",p:1900},{id:"fn_5000",n:"5000 V-Bucks",p:3200}],
+            'bl': [{id:"bl_100",n:"100 Gold",p:100},{id:"bl_500",n:"500 Gold",p:450},{id:"bl_1000",n:"1000 Gold",p:850}]
         };
 
-        let currentCartTotal = 0;
+        let cartSum = 0;
 
         async function init() {
             try {
-                const res = await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "getUserInfo", userId: userId }) });
+                const res = await fetch(API_URL, {
+                    method: "POST",
+                    body: JSON.stringify({ action: "getUserInfo", userId: userId })
+                });
                 const data = await res.json();
-                if(data.status === "ok") {
+                
+                if (data.status === "ok") {
                     document.getElementById("balance").innerText = data.user.balance + " ₽";
-                    document.getElementById("info-card").innerHTML = `Банк: ${data.payment.bank}<br>Карта: ${data.payment.card}<br><small>Скиньте скриншот!</small>`;
-                    document.getElementById("info-crypto").innerHTML = `USDT/TON<br>Адрес: ${data.payment.crypto.substring(0,10)}...<br><small>Скиньте скриншот!</small>`;
-                    updateCartUI();
+                    
+                    // Заполняем реквизиты
+                    document.getElementById("d-card").innerHTML = `Банк: ${data.requisites.bank}<br>Номер: ${data.requisites.card}<br>⚠️ Скинь скрин в поддержку!`;
+                    document.getElementById("d-crypto").innerHTML = `USDT/TON (TON Network)<br>${data.requisites.crypto.substring(0,15)}...<br>⚠️ Скинь скрин в поддержку!`;
+                    
+                    updateCart();
+                } else {
+                    alert("Ошибка данных: " + JSON.stringify(data));
                 }
-            } catch (e) {}
-        }
-
-        function openLink(url) { tg.openTelegramLink(url); }
-        function openGame(type, title) {
-            document.getElementById("game-title").innerText = title;
-            const c = document.getElementById("items-container"); c.innerHTML = "";
-            CATALOG[type].forEach(i => {
-                c.innerHTML += `<div class="item-row"><div class="item-info"><div class="item-icon">${i.icon}</div><div><div class="item-title">${i.name}</div><div class="item-price">${i.price} ₽</div></div></div><button class="btn-add" onclick="addToCart('${i.id}')">Купить</button></div>`;
-            });
-            document.getElementById("game-page").style.display = "block";
-            window.scrollTo(0,0);
-        }
-        function closeGame() { document.getElementById("game-page").style.display = "none"; }
-        
-        // PAYMENTS
-        function openDeposit() { document.getElementById("deposit-modal").style.display = "flex"; }
-        function closeDeposit() { document.getElementById("deposit-modal").style.display = "none"; }
-        function toggleMethod(el) {
-            document.querySelectorAll('.method-info').forEach(e => e.style.display = 'none');
-            el.querySelector('.method-info').style.display = 'block';
-        }
-
-        async function addToCart(code) {
-            tg.HapticFeedback.impactOccurred('light');
-            tg.MainButton.showProgress();
-            await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "addToCart", userId: userId, itemCode: code }) });
-            tg.MainButton.hideProgress();
-            tg.showAlert("Добавлено!");
-            updateCartUI();
-        }
-
-        async function updateCartUI() {
-            const res = await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "getCart", userId: userId }) });
-            const data = await res.json();
-            if(data.total > 0) {
-                document.getElementById("cart-panel").style.display = "flex";
-                document.getElementById("cart-total").innerText = data.total + " ₽";
-                currentCartTotal = data.total;
-            } else {
-                document.getElementById("cart-panel").style.display = "none";
-                currentCartTotal = 0;
+            } catch (e) {
+                document.getElementById("balance").innerText = "Ошибка";
+                alert("Не удалось загрузить баланс. Проверьте: 1. Вы обновили развертывание скрипта? 2. Ссылка в HTML верная?");
             }
         }
 
-        function checkCartManually() { if (currentCartTotal > 0) tg.showAlert("Сумма: " + currentCartTotal + " ₽. Оплата внизу."); else tg.showAlert("Корзина пуста"); }
+        function openGame(key, name) {
+            document.getElementById("page-items").style.display = "block";
+            document.getElementById("game-title").innerText = name;
+            const list = document.getElementById("list");
+            list.innerHTML = "";
+            
+            CATALOG[key].forEach(item => {
+                list.innerHTML += `
+                <div class="item-row">
+                    <div><b>${item.n}</b><br><small style="color:#aaa">${item.p} ₽</small></div>
+                    <button class="buy-btn" onclick="add('${item.id}')">Купить</button>
+                </div>`;
+            });
+        }
 
-        async function checkout() {
-            if(!confirm(`Списать ${currentCartTotal} ₽?`)) return;
+        async function add(code) {
             tg.MainButton.showProgress();
-            const res = await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "payCart", userId: userId }) });
+            await fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "addToCart", userId: userId, itemCode: code }) });
+            tg.MainButton.hideProgress();
+            tg.showAlert("Добавлено!");
+            updateCart();
+        }
+
+        async function updateCart() {
+            const res = await fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "getCart", userId: userId }) });
+            const data = await res.json();
+            cartSum = data.total;
+            if (cartSum > 0) {
+                document.getElementById("cart-bar").style.display = "flex";
+                document.getElementById("total").innerText = cartSum + " ₽";
+            } else {
+                document.getElementById("cart-bar").style.display = "none";
+            }
+        }
+
+        async function pay() {
+            if(!confirm(`Списать ${cartSum} ₽?`)) return;
+            tg.MainButton.showProgress();
+            const res = await fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "payCart", userId: userId }) });
             const data = await res.json();
             tg.MainButton.hideProgress();
-            if(data.status === "ok") { tg.showAlert("Успешно! Друг уведомлен."); location.reload(); } else { tg.showAlert("Ошибка: " + data.message); }
+            
+            if (data.status === "ok") {
+                tg.showAlert("Успешно! Друг уведомлен.");
+                location.reload();
+            } else {
+                alert("Ошибка: " + data.message);
+            }
         }
+
+        function openDeposit() { document.getElementById("modal").style.display = "flex"; }
+        function openLink(url) { tg.openTelegramLink(url); }
+        function togglePay(el) { el.querySelector(".pay-details").style.display = "block"; }
+        function showCartMsg() { if(cartSum > 0) tg.showAlert("Сумма: "+cartSum); else tg.showAlert("Корзина пуста"); }
 
         init();
     </script>
