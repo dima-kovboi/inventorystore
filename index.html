@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InventoryStore</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        :root { --bg: #0f0f13; --card: #1e1e24; --text: #fff; --accent: #ff9900; }
+        body { background: var(--bg); color: var(--text); font-family: sans-serif; padding: 15px; margin: 0; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .balance-box { background: #333; padding: 5px 10px; border-radius: 8px; font-size: 14px; font-weight: bold; color: #4cd964; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .card { background: var(--card); padding: 15px; border-radius: 12px; text-align: center; border: 1px solid #333; }
+        .card:active { transform: scale(0.98); }
+        .btn { background: var(--accent); color: #fff; border: none; padding: 8px; width: 100%; border-radius: 6px; margin-top: 8px; font-weight: bold; cursor: pointer;}
+        .tabs { display: flex; margin-bottom: 15px; gap: 10px; overflow-x: auto; }
+        .tab { background: #333; padding: 8px 15px; border-radius: 20px; font-size: 13px; white-space: nowrap; }
+        .tab.active { background: var(--accent); color: #000; }
+        
+        #cart-modal { display: none; position: fixed; bottom: 0; left: 0; width: 100%; background: #222; border-top: 2px solid var(--accent); padding: 20px; box-sizing: border-box; border-radius: 20px 20px 0 0; }
+        .loader { text-align: center; padding: 20px; color: #888; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div style="font-weight: bold; font-size: 18px;">InventoryStore</div>
+        <div class="balance-box" id="balance">Loading...</div>
+    </div>
+
+    <div class="tabs">
+        <div class="tab active" onclick="filter('all')">Все</div>
+        <div class="tab" onclick="filter('bs')">Brawl Stars</div>
+        <div class="tab" onclick="filter('pubg')">PUBG</div>
+        <div class="tab" onclick="filter('fn')">Fortnite</div>
+    </div>
+
+    <div id="products" class="grid">
+        <!-- Товары загрузятся тут -->
+    </div>
+
+    <div id="cart-btn" style="position: fixed; bottom: 20px; right: 20px; background: var(--accent); padding: 15px; border-radius: 50%; box-shadow: 0 0 10px rgba(255,153,0,0.5); display: none;" onclick="openCart()">
+        🛒
+    </div>
+
+    <div id="cart-modal">
+        <h3>Корзина</h3>
+        <div id="cart-items">Пусто</div>
+        <div style="margin-top: 15px; display: flex; gap: 10px;">
+            <button class="btn" style="background: #ff3b30;" onclick="api('clearCart')">Очистить</button>
+            <button class="btn" style="background: #4cd964;" onclick="api('payCart')">Оплатить</button>
+        </div>
+        <div style="text-align: center; margin-top: 10px; color: #888; font-size: 12px;" onclick="document.getElementById('cart-modal').style.display='none'">Закрыть</div>
+    </div>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+
+        // ⚠️ ВСТАВЬ СЮДА СВОЮ НОВУЮ ССЫЛКУ ИЗ СКРИПТА (/exec)
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby5JLTxemN8nWZclICGpJ0TxYLUkcNqcZN8pF31-wLnkQddgZ_GtkofM5s-QHQADLon3g/exec";
+
+        // Берем ID юзера (или ставим 1438120200 для теста в браузере)
+        const userId = tg.initDataUnsafe?.user?.id || 1438120200; 
+
+        const CATALOG = [
+            { id: "bs_30", name: "30 Гемов", price: 150, type: "bs", icon: "💎" },
+            { id: "bs_80", name: "80 Гемов", price: 350, type: "bs", icon: "💎" },
+            { id: "bs_170", name: "170 Гемов", price: 650, type: "bs", icon: "💎" },
+            { id: "pubg_60", name: "60 UC", price: 90, type: "pubg", icon: "💵" },
+            { id: "pubg_325", name: "325 UC", price: 450, type: "pubg", icon: "💵" },
+            { id: "fn_1000", name: "1000 V-Bucks", price: 800, type: "fn", icon: "⛏" },
+        ];
+
+        // 1. Загрузка данных
+        async function init() {
+            renderProducts();
+            const res = await fetch(SCRIPT_URL, {
+                method: "POST",
+                body: JSON.stringify({ action: "getUserInfo", userId: userId })
+            });
+            const data = await res.json();
+            if(data.status === "ok") {
+                document.getElementById("balance").innerText = data.user.balance + " ₽";
+                document.getElementById("cart-btn").style.display = "block";
+            }
+        }
+
+        // 2. Отрисовка товаров
+        function renderProducts(type = 'all') {
+            const container = document.getElementById("products");
+            container.innerHTML = "";
+            CATALOG.forEach(item => {
+                if (type === 'all' || item.type === type) {
+                    container.innerHTML += `
+                        <div class="card" onclick="addToCart('${item.id}')">
+                            <div style="font-size: 30px">${item.icon}</div>
+                            <div style="font-weight: bold; margin: 5px 0;">${item.name}</div>
+                            <div style="color: #aaa; font-size: 14px;">${item.price} ₽</div>
+                            <button class="btn">В корзину</button>
+                        </div>
+                    `;
+                }
+            });
+        }
+
+        function filter(type) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            renderProducts(type);
+        }
+
+        // 3. Работа с API (Корзина)
+        async function addToCart(code) {
+            tg.MainButton.showProgress();
+            await fetch(SCRIPT_URL, {
+                method: "POST",
+                body: JSON.stringify({ action: "addToCart", userId: userId, itemCode: code })
+            });
+            tg.MainButton.hideProgress();
+            tg.showAlert("Товар добавлен в корзину!");
+        }
+
+        async function openCart() {
+            document.getElementById("cart-modal").style.display = "block";
+            document.getElementById("cart-items").innerHTML = "Загрузка...";
+            
+            const res = await fetch(SCRIPT_URL, {
+                method: "POST",
+                body: JSON.stringify({ action: "getCart", userId: userId })
+            });
+            const data = await res.json();
+            
+            let html = "";
+            if (data.items.length === 0) html = "Корзина пуста";
+            else {
+                data.items.forEach(i => html += `<div>• ${i.name} - <b>${i.price}₽</b></div>`);
+                html += `<div style="margin-top: 10px; border-top: 1px solid #444; padding-top: 5px;">Итого: <b>${data.total} ₽</b></div>`;
+            }
+            document.getElementById("cart-items").innerHTML = html;
+        }
+
+        async function api(action) {
+            if(!confirm("Вы уверены?")) return;
+            const res = await fetch(SCRIPT_URL, {
+                method: "POST",
+                body: JSON.stringify({ action: action, userId: userId })
+            });
+            const data = await res.json();
+            if (data.status === "ok") {
+                tg.showAlert("Успешно!");
+                location.reload(); // Перезагрузить страницу для обновления баланса
+            } else {
+                tg.showAlert("Ошибка: " + data.message);
+            }
+        }
+
+        init();
+    </script>
+
+</body>
+</html>
