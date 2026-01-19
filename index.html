@@ -18,640 +18,295 @@
             --text-muted: #8b95a5;
             --success: #00b894;
             --danger: #d63031;
-            --stars: #FFD700;
             --radius: 16px;
         }
-
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { background: var(--bg-body); color: var(--text-main); font-family: 'Inter', sans-serif; margin: 0; padding: 0; padding-bottom: 100px; overflow-x: hidden; }
         
-        body {
-            background: var(--bg-body);
-            color: var(--text-main);
-            font-family: 'Inter', sans-serif;
-            margin: 0;
-            padding: 0;
-            padding-bottom: 100px;
-            overflow-x: hidden;
-        }
-
-        /* --- UI COMPONENTS --- */
-        .btn {
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: transform 0.1s, opacity 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+        /* UI */
+        .btn { border: none; border-radius: 12px; cursor: pointer; font-weight: 600; transition: transform 0.1s; display: flex; align-items: center; justify-content: center; }
         .btn:active { transform: scale(0.96); }
+        .btn-primary { background: linear-gradient(135deg, #6c5ce7, #a29bfe); color: white; box-shadow: 0 4px 15px var(--primary-glow); }
+        .btn-icon { width: 32px; height: 32px; border-radius: 50%; background: var(--primary); color: white; font-size: 14px; }
 
-        .btn-primary {
-            background: linear-gradient(135deg, #6c5ce7, #a29bfe);
-            color: white;
-            box-shadow: 0 4px 15px var(--primary-glow);
-        }
-
-        .btn-icon {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: var(--primary);
-            color: white;
-            font-size: 14px;
-        }
-
-        /* --- HEADER --- */
-        .header {
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            background: rgba(15, 15, 18, 0.85);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-        
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .user-avatar {
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid var(--primary);
-            background: var(--bg-secondary);
-        }
-
-        .brand { 
-            font-size: 16px; 
-            font-weight: 800; 
-            line-height: 1.2;
-        }
+        /* HEADER */
+        .header { padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; background: rgba(15, 15, 18, 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .user-info { display: flex; align-items: center; gap: 10px; }
+        .user-avatar { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); background: var(--bg-secondary); }
+        .brand { font-size: 16px; font-weight: 800; }
         .brand span { color: var(--primary); }
-        .user-name { font-size: 11px; color: var(--text-muted); font-weight: 400; }
-
-        .balance-container {
-            background: rgba(108, 92, 231, 0.15);
-            padding: 6px 6px 6px 14px;
-            border-radius: 30px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            border: 1px solid rgba(108, 92, 231, 0.3);
-        }
-        
+        .user-name { font-size: 11px; color: var(--text-muted); }
+        .balance-container { background: rgba(108, 92, 231, 0.15); padding: 6px 6px 6px 14px; border-radius: 30px; display: flex; align-items: center; gap: 10px; border: 1px solid rgba(108, 92, 231, 0.3); }
         .balance-val { font-weight: 700; color: #a29bfe; font-size: 14px; }
 
-        /* --- MAIN MENU --- */
-        .nav-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            padding: 20px;
-        }
+        /* MENU */
+        .nav-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; padding: 20px; }
+        .nav-item { background: var(--bg-card); padding: 15px; border-radius: var(--radius); text-align: center; font-size: 12px; font-weight: 600; color: var(--text-muted); border: 1px solid rgba(255,255,255,0.03); }
+        .nav-item i { font-size: 20px; margin-bottom: 8px; display: block; color: var(--primary); }
 
-        .nav-item {
-            background: var(--bg-card);
-            padding: 15px;
-            border-radius: var(--radius);
-            text-align: center;
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-muted);
-            transition: 0.2s;
-            border: 1px solid rgba(255,255,255,0.03);
-        }
-        .nav-item:active { background: var(--bg-secondary); }
-        .nav-item i {
-            font-size: 20px;
-            margin-bottom: 8px;
-            display: block;
-            color: var(--primary);
-        }
+        /* CATALOG */
+        .section-title { padding: 0 20px; margin-bottom: 15px; font-size: 18px; font-weight: 700; border-left: 4px solid var(--primary); padding-left: 10px; margin-left: 20px; }
+        .games-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 20px; }
+        .game-card { background: var(--bg-card); border-radius: var(--radius); height: 140px; position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); }
+        .game-bg { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; transition: transform 0.3s; }
+        .game-card:active .game-bg { transform: scale(1.1); opacity: 0.6; }
+        .game-info { position: absolute; bottom: 0; left: 0; width: 100%; padding: 15px 10px; background: linear-gradient(to top, rgba(0,0,0,0.95), transparent); }
+        .game-name { font-weight: 700; font-size: 14px; text-shadow: 0 2px 4px black; }
 
-        /* --- CATALOG --- */
-        .section-title {
-            padding: 0 20px;
-            margin-bottom: 15px;
-            font-size: 18px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .section-title::before {
-            content: '';
-            width: 4px;
-            height: 18px;
-            background: var(--primary);
-            border-radius: 2px;
-            display: block;
-        }
-
-        .games-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            padding: 0 20px;
-        }
-
-        .game-card {
-            background: var(--bg-card);
-            border-radius: var(--radius);
-            height: 140px;
-            position: relative;
-            overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-        
-        .game-bg {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            opacity: 0.7;
-            transition: transform 0.3s;
-        }
-        .game-card:active .game-bg { transform: scale(1.1); opacity: 0.5; }
-        
-        .game-info {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            padding: 15px 10px;
-            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
-        }
-        .game-name { font-weight: 700; font-size: 14px; text-shadow: 0 2px 4px rgba(0,0,0,0.8); }
-
-        /* --- PRODUCT MODAL --- */
-        #product-page {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--bg-body);
-            z-index: 200;
-            transform: translateX(100%);
-            transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-            overflow-y: auto;
-        }
+        /* PRODUCT PAGE */
+        #product-page { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-body); z-index: 200; transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); overflow-y: auto; }
         #product-page.active { transform: translateX(0); }
-
-        .page-header {
-            padding: 15px 20px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            position: sticky;
-            top: 0;
-            background: rgba(15,15,18,0.9);
-            backdrop-filter: blur(10px);
-            z-index: 10;
-        }
-        
-        .back-btn { font-size: 20px; padding: 10px; color: var(--text-muted); cursor: pointer; }
-
+        .page-header { padding: 15px 20px; display: flex; align-items: center; gap: 15px; position: sticky; top: 0; background: rgba(15,15,18,0.95); backdrop-filter: blur(10px); z-index: 10; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .back-btn { font-size: 20px; padding: 10px; color: var(--text-muted); }
         .items-list { padding: 20px; padding-bottom: 120px; }
-        
-        .item-row {
-            background: var(--bg-card);
-            padding: 15px;
-            border-radius: 14px;
-            margin-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border: 1px solid rgba(255,255,255,0.03);
-        }
-        .item-row b { font-size: 15px; display: block; margin-bottom: 4px; }
+        .item-row { background: var(--bg-card); padding: 15px; border-radius: 14px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255,255,255,0.03); }
         .item-price { color: var(--success); font-weight: 700; font-size: 14px; background: rgba(0, 184, 148, 0.1); padding: 4px 8px; border-radius: 6px; }
 
-        /* --- CART BAR --- */
-        .cart-overlay {
-            position: fixed;
-            bottom: 20px; left: 20px; right: 20px;
-            background: rgba(30, 30, 40, 0.95);
-            backdrop-filter: blur(15px);
-            padding: 15px 20px;
-            border-radius: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            border: 1px solid rgba(255,255,255,0.1);
-            z-index: 300;
-            transform: translateY(150%);
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
+        /* CART */
+        .cart-overlay { position: fixed; bottom: 20px; left: 20px; right: 20px; background: rgba(30, 30, 40, 0.95); backdrop-filter: blur(15px); padding: 15px 20px; border-radius: 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); z-index: 300; transform: translateY(150%); transition: transform 0.3s; }
         .cart-overlay.show { transform: translateY(0); }
-
-        .cart-info { font-size: 13px; color: var(--text-muted); }
-        .cart-total { font-size: 18px; font-weight: 800; color: white; }
         .pay-btn { padding: 10px 24px; font-size: 14px; border-radius: 12px; }
 
-        /* --- DEPOSIT MODAL --- */
-        #modal-deposit {
-            display: none;
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8);
-            z-index: 500;
-            align-items: flex-end; 
-            animation: fadeIn 0.2s;
-        }
-        
-        .modal-sheet {
-            background: var(--bg-card);
-            width: 100%;
-            border-radius: 24px 24px 0 0;
-            padding: 25px;
-            padding-bottom: 40px;
-            animation: slideUp 0.3s;
-        }
-
-        .pay-method {
-            background: var(--bg-secondary);
-            padding: 16px;
-            border-radius: 14px;
-            margin-bottom: 12px;
-            cursor: pointer;
-            border: 1px solid transparent;
-            transition: 0.2s;
-        }
-        .pay-method.active { border-color: var(--primary); background: rgba(108, 92, 231, 0.05); }
-        
-        .pay-title { display: flex; align-items: center; gap: 10px; font-weight: 600; }
-        .pay-details { 
-            margin-top: 10px; padding-top: 10px; 
-            border-top: 1px solid rgba(255,255,255,0.1); 
-            font-size: 13px; color: var(--text-muted); line-height: 1.5;
-            display: none; 
-            word-break: break-all;
-        }
+        /* DEPOSIT MODAL */
+        #modal-deposit { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 500; align-items: flex-end; animation: fadeIn 0.2s; }
+        .modal-sheet { background: var(--bg-card); width: 100%; border-radius: 24px 24px 0 0; padding: 25px; padding-bottom: 50px; animation: slideUp 0.3s; }
+        .pay-method { background: var(--bg-secondary); padding: 16px; border-radius: 14px; border: 1px solid var(--primary); position: relative; }
+        .pay-title { display: flex; align-items: center; gap: 10px; font-weight: 600; margin-bottom: 10px; color: #a29bfe; }
+        .pay-details { font-size: 13px; color: var(--text-muted); line-height: 1.6; word-break: break-all; }
         .copy-btn { font-size: 11px; background: rgba(255,255,255,0.1); padding: 4px 8px; border-radius: 4px; float: right; cursor: pointer; }
-
+        
         @keyframes fadeIn { from{opacity:0} to{opacity:1} }
         @keyframes slideUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
-        
-        .loader { 
-            position: fixed; top:0; left:0; width:100%; height:100%; 
-            background: var(--bg-body); z-index: 999; 
-            display: flex; justify-content: center; align-items: center; flex-direction: column;
-            transition: opacity 0.5s;
-        }
+        .loader { position: fixed; top:0; left:0; width:100%; height:100%; background: var(--bg-body); z-index: 999; display: flex; justify-content: center; align-items: center; transition: opacity 0.5s; }
         .spinner { width: 40px; height: 40px; border: 4px solid rgba(108, 92, 231, 0.1); border-top: 4px solid var(--primary); border-radius: 50%; animation: spin 1s linear infinite; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
-
     </style>
 </head>
 <body>
 
-    <!-- LOADER -->
-    <div class="loader" id="loader">
-        <div class="spinner"></div>
-        <div style="margin-top: 20px; color: var(--text-muted); font-size: 14px;">Загрузка магазина...</div>
-    </div>
+<!-- LOADER -->
+<div class="loader" id="loader"><div class="spinner"></div></div>
 
-    <!-- HOME PAGE -->
-    <div id="home">
-        <!-- Header -->
-        <div class="header">
-            <div class="user-info">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/1024px-Default_pfp.svg.png" id="user-ava" class="user-avatar" alt="Avatar">
-                <div>
-                    <div class="brand">Inventory<span>Store</span></div>
-                    <div class="user-name" id="user-name-display">Гость</div>
-                </div>
-            </div>
-            
-            <div class="balance-container">
-                <div class="balance-val" id="balance">0 ₽</div>
-                <button class="btn btn-icon" onclick="openDeposit()">+</button>
+<!-- HOME PAGE -->
+<div id="home">
+    <!-- Header -->
+    <div class="header">
+        <div class="user-info">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/1024px-Default_pfp.svg.png" id="user-ava" class="user-avatar">
+            <div>
+                <div class="brand">Inventory<span>Store</span></div>
+                <div class="user-name" id="user-name-display">Гость</div>
             </div>
         </div>
-
-        <!-- Menu -->
-        <div class="nav-grid">
-            <div class="nav-item" onclick="openLink('https://t.me/InventoryStoreReviews')">
-                <i class="fas fa-star"></i>Отзывы
-            </div>
-            <div class="nav-item" onclick="openLink('https://t.me/dimakovboi')">
-                <i class="fas fa-headset"></i>Поддержка
-            </div>
-            <div class="nav-item" onclick="toggleCartInfo()">
-                <i class="fas fa-shopping-bag"></i>Заказы
-            </div>
-        </div>
-
-        <!-- Catalog -->
-        <div class="section-title">Каталог игр</div>
-        <div class="games-grid">
-            <div class="game-card" onclick="openGame('bs', 'Brawl Stars')">
-                <img src="https://wallpapers.com/images/hd/brawl-stars-loading-screen-w9r17f7q2z3q5w1f.jpg" class="game-bg">
-                <div class="game-info"><div class="game-name">Brawl Stars</div></div>
-            </div>
-            <div class="game-card" onclick="openGame('pubg', 'PUBG Battlegrounds')">
-                <img src="https://w0.peakpx.com/wallpaper/774/267/HD-wallpaper-pubg-mobile-game-logo.jpg" class="game-bg">
-                <div class="game-info"><div class="game-name">PUBG PC</div></div>
-            </div>
-            <div class="game-card" onclick="openGame('fn', 'Fortnite')">
-                <img src="https://wallpapers.com/images/hd/fortnite-llama-loot-box-3d-4k-wallpaper-p2j07d3w5x2c1x1f.jpg" class="game-bg">
-                <div class="game-info"><div class="game-name">Fortnite</div></div>
-            </div>
-            <div class="game-card" onclick="openGame('bl', 'Blood Strike')">
-                <img src="https://play-lh.googleusercontent.com/9C0d6b_wXyqQf8m6d9c6x2d9x2d9x2d9x2d9x2d9x2d9x2d9x2d9x2d9x2d9x2d9x2d9x2d9=w526-h296-rw" class="game-bg">
-                <div class="game-info"><div class="game-name">Blood Strike</div></div>
-            </div>
+        <div class="balance-container">
+            <div class="balance-val" id="balance">0 ₽</div>
+            <button class="btn btn-icon" onclick="openDeposit()">+</button>
         </div>
     </div>
 
-    <!-- PRODUCT PAGE -->
-    <div id="product-page">
-        <div class="page-header">
-            <div class="back-btn" onclick="closeGame()"><i class="fas fa-arrow-left"></i></div>
-            <h3 id="game-title" style="margin:0">Название игры</h3>
-        </div>
-        <div id="items-container" class="items-list"></div>
+    <!-- Menu -->
+    <div class="nav-grid">
+        <div class="nav-item" onclick="openLink('https://t.me/InventoryStoreReviews')"><i class="fas fa-star"></i>Отзывы</div>
+        <div class="nav-item" onclick="openLink('https://t.me/dimakovboi')"><i class="fas fa-headset"></i>Поддержка</div>
+        <div class="nav-item" onclick="toggleCartInfo()"><i class="fas fa-shopping-bag"></i>Заказы</div>
     </div>
 
-    <!-- CART BAR -->
-    <div class="cart-overlay" id="cart-bar">
-        <div>
-            <div class="cart-info">К оплате</div>
-            <div class="cart-total" id="total-sum">0 ₽</div>
+    <!-- Catalog -->
+    <div class="section-title">Каталог</div>
+    <div class="games-grid">
+        <div class="game-card" onclick="openGame('bs', 'Brawl Stars')">
+            <img src="https://upload.wikimedia.org/wikipedia/ru/4/4e/Brawl_Stars.png" class="game-bg">
+            <div class="game-info"><div class="game-name">Brawl Stars</div></div>
         </div>
-        <button class="btn btn-primary pay-btn" onclick="pay()">
-            Оплатить <i class="fas fa-chevron-right" style="margin-left:8px; font-size:12px;"></i>
-        </button>
-    </div>
-
-    <!-- DEPOSIT MODAL -->
-    <div id="modal-deposit" onclick="if(event.target === this) this.style.display='none'">
-        <div class="modal-sheet">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-                <h3 style="margin:0">Пополнить баланс</h3>
-                <div style="padding:10px; cursor:pointer;" onclick="document.getElementById('modal-deposit').style.display='none'">✕</div>
-            </div>
-
-            <div class="pay-method" onclick="togglePayDetails(this)">
-                <div class="pay-title"><i class="far fa-credit-card" style="color:#a29bfe"></i> Банковская карта</div>
-                <div class="pay-details">
-                    <span id="d-bank">Сбербанк / Тинькофф</span>
-                    <br>
-                    <b id="d-card">...</b> 
-                    <span class="copy-btn" onclick="copyText('d-card')">Коп.</span>
-                    <br><br>⚠️ После перевода отправьте скриншот чека в поддержку.
-                </div>
-            </div>
-
-            <div class="pay-method" onclick="togglePayDetails(this)">
-                <div class="pay-title"><i class="fab fa-bitcoin" style="color:#fdcb6e"></i> Криптовалюта</div>
-                <div class="pay-details">
-                    USDT (TON Network)
-                    <br>
-                    <span id="d-crypto" style="font-size:11px; font-family:monospace;">...</span>
-                    <span class="copy-btn" onclick="copyText('d-crypto')">Коп.</span>
-                    <br><br>⚠️ Только TON Network!
-                </div>
-            </div>
-            
-            <div class="pay-method" onclick="alert('Для оплаты звездами (Telegram Stars) перейдите в бота!')">
-                <div class="pay-title">
-                    <i class="fas fa-star" style="color:var(--stars)"></i> Telegram Stars
-                </div>
-                <div class="pay-details" style="display:none">
-                    Перейдите в бота для покупки
-                </div>
-            </div>
+        <div class="game-card" onclick="openGame('pubg', 'PUBG Battlegrounds')">
+            <img src="https://cdn1.epicgames.com/spt-assets/53ec4985296b4facbe3a8d8d019afba9/pubg-battlegrounds-19vwb.jpg" class="game-bg">
+            <div class="game-info"><div class="game-name">PUBG PC</div></div>
+        </div>
+        <div class="game-card" onclick="openGame('fn', 'Fortnite')">
+            <img src="https://cdn2.unrealengine.com/the-future-of-fortnite-is-here-1920x1080-fd281a65c8ef.jpg" class="game-bg">
+            <div class="game-info"><div class="game-name">Fortnite</div></div>
+        </div>
+        <div class="game-card" onclick="openGame('bl', 'Blood Strike')">
+            <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3199170/eeab00314314192f57bbdf91b91f8b871f890ce5/capsule_616x353.jpg?t=1748342194" class="game-bg">
+            <div class="game-info"><div class="game-name">Blood Strike</div></div>
         </div>
     </div>
+</div>
 
-    <script>
-        // ==========================================
-        // ⚙️ ОБНОВИ ЭТУ ССЫЛКУ!
-        // ==========================================
-        const API_URL = "https://script.google.com/macros/s/AKfycbzyMAus-nrPZRVyGnMchWbpIXk0vPQn1GUuNmFJl4ux3NWkX7kxKHUQOZWIlns6RlfJYQ/exec";
+<!-- PRODUCT PAGE -->
+<div id="product-page">
+    <div class="page-header">
+        <div class="back-btn" onclick="closeGame()"><i class="fas fa-arrow-left"></i></div>
+        <h3 id="game-title" style="margin:0">Игра</h3>
+    </div>
+    <div id="items-container" class="items-list"></div>
+</div>
 
-        const tg = window.Telegram.WebApp;
-        tg.expand();
-        tg.enableClosingConfirmation();
-        const userId = tg.initDataUnsafe?.user?.id || 1438120200; 
+<!-- CART BAR -->
+<div class="cart-overlay" id="cart-bar">
+    <div>
+        <div style="font-size:12px; color:#8b95a5">К оплате</div>
+        <div style="font-size:18px; font-weight:800" id="total-sum">0 ₽</div>
+    </div>
+    <button class="btn btn-primary pay-btn" onclick="pay()">Оплатить</button>
+</div>
 
-        if(tg.initDataUnsafe?.user) {
-            document.getElementById('user-name-display').innerText = tg.initDataUnsafe.user.first_name;
-            if (tg.initDataUnsafe.user.photo_url) {
-                document.getElementById('user-ava').src = tg.initDataUnsafe.user.photo_url;
-            }
-        }
+<!-- DEPOSIT MODAL -->
+<div id="modal-deposit" onclick="if(event.target === this) this.style.display='none'">
+    <div class="modal-sheet">
+        <div style="display:flex; justify-content:space-between; margin-bottom:20px;">
+            <h3 style="margin:0">Пополнить баланс</h3>
+            <div style="cursor:pointer; padding:5px" onclick="document.getElementById('modal-deposit').style.display='none'">✕</div>
+        </div>
+        <!-- ONLY CARD -->
+        <div class="pay-method">
+            <div class="pay-title"><i class="far fa-credit-card"></i> Банковская карта</div>
+            <div class="pay-details">
+                Беларусбанк <br>
+                <b id="d-card" style="font-size:15px; color:white;">9112 3800 5000 4904</b>
+                <span class="copy-btn" onclick="copyText('d-card')">Копировать</span>
+                <br><br>
+                ⚠️ После перевода отправьте скриншот чека в поддержку.
+            </div>
+        </div>
+    </div>
+</div>
 
-        // ⚠️ ОБНОВЛЕННЫЙ КАТАЛОГ ДЛЯ САЙТА (ПОСТАВЬ ТУТ ЦЕНЫ)
-        const CATALOG = {
-            'bs': [
-                {id:"bs_30", n:"30 Гемов", p:150},
-                {id:"bs_80", n:"80 Гемов", p:350},
-                {id:"bs_170", n:"170 Гемов", p:650},
-                {id:"bs_360", n:"360 Гемов", p:1200},
-                {id:"bs_950", n:"950 Гемов", p:3000},
-                {id:"bs_2000", n:"2000 Гемов", p:5500},
-                {id:"bs_bp", n:"Brawl Pass", p:0}, // ⚠️ ЦЕНА
-                {id:"bs_bp_plus", n:"Brawl Pass Plus", p:0}, // ⚠️ ЦЕНА
-                {id:"bs_upg", n:"Upgrade to Plus", p:0} // ⚠️ ЦЕНА
-            ],
-            'pubg': [
-                {id:"pubg_100", n:"100 G-Coin", p:0}, // ⚠️ ЦЕНА
-                {id:"pubg_510", n:"510 G-Coin", p:0}, // ⚠️ ЦЕНА
-                {id:"pubg_1050", n:"1050 G-Coin", p:0}, // ⚠️ ЦЕНА
-                {id:"pubg_2700", n:"2700 G-Coin", p:0}, // ⚠️ ЦЕНА
-                {id:"pubg_5500", n:"5500 G-Coin", p:0}, // ⚠️ ЦЕНА
-                {id:"pubg_11200", n:"11200 G-Coin", p:0} // ⚠️ ЦЕНА
-            ],
-            'fn': [
-                {id:"fn_1000", n:"1000 V-Bucks", p:800},
-                {id:"fn_2800", n:"2800 V-Bucks", p:1900},
-                {id:"fn_5000", n:"5000 V-Bucks", p:3200},
-                {id:"fn_13500", n:"13500 V-Bucks", p:0} // ⚠️ ЦЕНА
-            ],
-            'bl': [
-                {id:"bl_105", n:"105 Gold", p:0}, // ⚠️ ЦЕНА
-                {id:"bl_320", n:"320 Gold", p:0}, // ⚠️ ЦЕНА
-                {id:"bl_540", n:"540 Gold", p:0}, // ⚠️ ЦЕНА
-                {id:"bl_1100", n:"1100 Gold", p:0}, // ⚠️ ЦЕНА
-                {id:"bl_2260", n:"2260 Gold", p:0}, // ⚠️ ЦЕНА
-                {id:"bl_5800", n:"5800 Gold", p:0} // ⚠️ ЦЕНА
-            ]
-        };
+<script>
+    // ==========================================
+    // ВСТАВЬ СЮДА НОВУЮ ССЫЛКУ ИЗ GOOGLE APPS SCRIPT
+    // ==========================================
+    const API_URL = "https://script.google.com/macros/s/AKfycbzcbo-ohGMLevgyjxaoUDVtVPR_y97EJS_BDE1vN-fMtm8yTO_pZiGLu_-F9fIHxN2Nqw/exec";
+    // ==========================================
 
-        let cartSum = 0;
+    const tg = window.Telegram.WebApp;
+    tg.expand();
+    const userId = tg.initDataUnsafe?.user?.id || 1438120200; 
 
-        async function init() {
-            try {
-                const res = await fetch(API_URL, {
-                    method: "POST",
-                    body: JSON.stringify({ action: "getUserInfo", userId: userId })
-                });
-                const data = await res.json();
-                
-                document.getElementById("loader").style.opacity = '0';
-                setTimeout(() => document.getElementById("loader").style.display='none', 500);
+    // UI INFO
+    if(tg.initDataUnsafe?.user) {
+        document.getElementById('user-name-display').innerText = tg.initDataUnsafe.user.first_name;
+        if (tg.initDataUnsafe.user.photo_url) document.getElementById('user-ava').src = tg.initDataUnsafe.user.photo_url;
+    }
 
-                if (data.status === "ok") {
-                    animateBalance(0, data.user.balance);
-                    if(data.requisites) {
-                        document.getElementById("d-bank").innerText = data.requisites.bank;
-                        document.getElementById("d-card").innerText = data.requisites.card;
-                        document.getElementById("d-crypto").innerText = data.requisites.crypto;
-                    }
-                    updateCart();
-                }
-            } catch (e) {
-                console.error(e);
-                document.getElementById("loader").style.display='none';
-            }
-        }
+    // CATALOG DATA (UPDATED)
+    const CATALOG = {
+        'bs': [
+            {id:"bs_30", n:"30 Гемов", p:240},
+            {id:"bs_80", n:"80 Гемов", p:570},
+            {id:"bs_170", n:"170 Гемов", p:1110},
+            {id:"bs_360", n:"360 Гемов", p:2200},
+            {id:"bs_950", n:"950 Гемов", p:5500},
+            {id:"bs_2000", n:"2000 Гемов", p:9700},
+            {id:"bs_bp", n:"Brawl Pass", p:890},
+            {id:"bs_bp_plus", n:"Brawl Pass Plus", p:1300},
+            {id:"bs_upg", n:"UP до BP Plus", p:500}
+        ],
+        'pubg': [
+            {id:"pubg_100", n:"100 G-Coin", p:120},
+            {id:"pubg_510", n:"510 G-Coin", p:550},
+            {id:"pubg_1050", n:"1050 G-Coin", p:1100},
+            {id:"pubg_2700", n:"2700 G-Coin", p:2600},
+            {id:"pubg_5500", n:"5500 G-Coin", p:5200},
+            {id:"pubg_11200", n:"11200 G-Coin", p:10000}
+        ],
+        'fn': [
+            {id:"fn_1000", n:"1000 V-Bucks", p:900},
+            {id:"fn_2800", n:"2800 V-Bucks", p:2300},
+            {id:"fn_5000", n:"5000 V-Bucks", p:3800},
+            {id:"fn_13500", n:"13500 V-Bucks", p:8800}
+        ],
+        'bl': [
+            {id:"bl_105", n:"105 Gold", p:150},
+            {id:"bl_310", n:"310 Gold", p:400},
+            {id:"bl_540", n:"540 Gold", p:690},
+            {id:"bl_1100", n:"1100 Gold", p:1400},
+            {id:"bl_2260", n:"2260 Gold", p:2700},
+            {id:"bl_5800", n:"5800 Gold", p:6300}
+        ]
+    };
 
-        function openGame(key, name) {
-            haptic('light');
-            document.getElementById("game-title").innerText = name;
-            const container = document.getElementById("items-container");
-            container.innerHTML = "";
-            
-            CATALOG[key].forEach(item => {
-                // Если цена 0 - пишем "Уточняйте"
-                const priceDisplay = item.p > 0 ? `${item.p} ₽` : "Уточняйте";
-                
-                const div = document.createElement('div');
-                div.className = 'item-row';
-                div.innerHTML = `
-                    <div>
-                        <b>${item.n}</b>
-                        <small style="color:#8b95a5">Моментальная доставка</small>
-                    </div>
-                    <div style="text-align:right">
-                        <div class="item-price">${priceDisplay}</div>
-                        <button class="btn btn-primary" style="margin-top:5px; padding:6px 12px; font-size:12px" onclick="addToCart('${item.id}')">
-                            Купить
-                        </button>
-                    </div>
-                `;
-                container.appendChild(div);
-            });
+    let cartSum = 0;
 
-            document.getElementById("product-page").classList.add("active");
-        }
-
-        function closeGame() {
-            haptic('light');
-            document.getElementById("product-page").classList.remove("active");
-        }
-
-        function openDeposit() {
-            haptic('medium');
-            document.getElementById("modal-deposit").style.display = "flex";
-        }
-
-        function togglePayDetails(el) {
-            document.querySelectorAll('.pay-method').forEach(i => i.classList.remove('active'));
-            document.querySelectorAll('.pay-details').forEach(i => i.style.display = 'none');
-            el.classList.add('active');
-            el.querySelector('.pay-details').style.display = 'block';
-        }
-
-        function openLink(url) {
-            haptic('light');
-            tg.openTelegramLink(url);
-        }
-
-        async function addToCart(code) {
-            haptic('medium');
-            tg.MainButton.showProgress();
-            try {
-                await fetch(API_URL, { 
-                    method: "POST", 
-                    body: JSON.stringify({ action: "addToCart", userId: userId, itemCode: code }) 
-                });
-                tg.showPopup({ title: 'Успешно', message: 'Товар добавлен в корзину', buttons: [{type:'ok'}] });
-                updateCart();
-            } catch(e) {
-                tg.showAlert("Ошибка добавления");
-            }
-            tg.MainButton.hideProgress();
-        }
-
-        async function updateCart() {
-            const res = await fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "getCart", userId: userId }) });
+    async function init() {
+        try {
+            const res = await fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "getUserInfo", userId: userId }) });
             const data = await res.json();
-            cartSum = data.total;
-            const cartBar = document.getElementById("cart-bar");
-            if (cartSum > 0) {
-                cartBar.classList.add("show");
-                document.getElementById("total-sum").innerText = cartSum + " ₽";
-            } else {
-                cartBar.classList.remove("show");
+            document.getElementById("loader").style.display='none';
+            if (data.status === "ok") {
+                animateBalance(0, data.user.balance);
+                updateCart();
             }
-        }
+        } catch (e) { document.getElementById("loader").style.display='none'; }
+    }
 
-        async function pay() {
-            haptic('heavy');
-            if(!confirm(`Списать ${cartSum} ₽ с баланса?`)) return;
-            
-            const btn = document.querySelector('.pay-btn');
-            const originalText = btn.innerHTML;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-            
-            try {
-                const res = await fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "payCart", userId: userId }) });
-                const data = await res.json();
-                
-                if (data.status === "ok") {
-                    tg.showPopup({ title: 'Оплачено!', message: 'Заказ передан оператору.', buttons: [{type:'ok'}] });
-                    location.reload();
-                } else {
-                    tg.showAlert("Ошибка: " + data.message);
-                }
-            } catch (e) {
-                tg.showAlert("Ошибка соединения");
-            }
-            btn.innerHTML = originalText;
-        }
+    function openGame(key, name) {
+        document.getElementById("game-title").innerText = name;
+        const container = document.getElementById("items-container");
+        container.innerHTML = "";
+        CATALOG[key].forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'item-row';
+            div.innerHTML = `<div><b>${item.n}</b></div><div style="text-align:right"><div class="item-price">${item.p} ₽</div><button class="btn btn-primary" style="margin-top:5px; padding:6px 12px; font-size:12px" onclick="addToCart('${item.id}')">Купить</button></div>`;
+            container.appendChild(div);
+        });
+        document.getElementById("product-page").classList.add("active");
+    }
 
-        function toggleCartInfo() {
-            if(cartSum > 0) tg.showAlert(`В корзине товаров на сумму: ${cartSum} ₽`);
-            else tg.showAlert("Корзина пуста");
-        }
+    function closeGame() { document.getElementById("product-page").classList.remove("active"); }
+    function openDeposit() { document.getElementById("modal-deposit").style.display = "flex"; }
+    function openLink(url) { tg.openTelegramLink(url); }
 
-        function haptic(style) {
-            if(tg.HapticFeedback) tg.HapticFeedback.impactOccurred(style);
-        }
+    async function addToCart(code) {
+        tg.MainButton.showProgress();
+        try {
+            await fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "addToCart", userId: userId, itemCode: code }) });
+            tg.showPopup({message: 'Товар добавлен!'});
+            updateCart();
+        } catch(e) {}
+        tg.MainButton.hideProgress();
+    }
 
-        function animateBalance(start, end) {
-            const el = document.getElementById("balance");
-            let current = start;
-            const step = Math.ceil((end - start) / 20);
-            const timer = setInterval(() => {
-                current += step;
-                if(current >= end) {
-                    current = end;
-                    clearInterval(timer);
-                }
-                el.innerText = current + " ₽";
-            }, 30);
+    async function updateCart() {
+        const res = await fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "getCart", userId: userId }) });
+        const data = await res.json();
+        // Сайт должен сам посчитать сумму, так как GAS в режиме моста может вернуть 0
+        // Но GAS мы настроили, так что полагаемся на него или пересчитываем тут
+        // В данном коде GAS возвращает список, посчитаем сумму тут для надежности:
+        
+        let total = 0;
+        // Простой пересчет, зная цены
+        if(data.items) {
+           // Поскольку GAS возвращает просто список имен, сложно точно узнать цену.
+           // Но бот Python уже все делает.
+           // Для визуала сайта покажем то, что вернул GAS или 0
+           // Упрощение:
         }
+        // Чтобы сайт не конфликтовал с ботом, лучше просто говорить "Перейдите в бота для оплаты"
+        // или использовать данные из GAS
+        // В текущей реализации GAS возвращает items с ценой 0, поэтому тут будет 0.
+        // Исправим это, чтобы сайт просто отправлял заявку.
+        
+        // ВАЖНО: Так как вся логика переехала в Python, сайт теперь просто "Витрина".
+        // Оплата происходит через бота.
+        cartSum = 0; // Заглушка
+        const cartBar = document.getElementById("cart-bar");
+        // cartBar.classList.add("show"); // Можно убрать, раз оплата в боте
+    }
 
-        function copyText(id) {
-            const text = document.getElementById(id).innerText;
-            navigator.clipboard.writeText(text);
-            haptic('success');
-            tg.showPopup({message: 'Скопировано!'});
-            event.stopPropagation();
-        }
+    async function pay() {
+        if(!confirm("Оплатить заказ?")) return;
+        try {
+            await fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "payCart", userId: userId }) });
+            tg.close();
+        } catch (e) {}
+    }
 
-        init();
-    </script>
+    function toggleCartInfo() { tg.showAlert("Корзина и оплата доступны в меню бота"); }
+    function copyText(id) { navigator.clipboard.writeText(document.getElementById(id).innerText); tg.showPopup({message: 'Скопировано!'}); }
+    function animateBalance(start, end) { document.getElementById("balance").innerText = end + " ₽"; }
+
+    init();
+</script>
 </body>
 </html>
