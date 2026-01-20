@@ -23,15 +23,14 @@
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { background: var(--bg-body); color: var(--text-main); font-family: 'Inter', sans-serif; margin: 0; padding: 0; padding-bottom: 100px; overflow-x: hidden; }
         
-        /* UI */
-        .btn { border: none; border-radius: 12px; cursor: pointer; font-weight: 600; transition: transform 0.1s; display: flex; align-items: center; justify-content: center; }
-        .btn:active { transform: scale(0.96); }
+        .btn { border: none; border-radius: 12px; cursor: pointer; font-weight: 600; transition: 0.1s; display: flex; align-items: center; justify-content: center; }
+        .btn:active { transform: scale(0.96); opacity: 0.8; }
         .btn-primary { background: linear-gradient(135deg, #6c5ce7, #a29bfe); color: white; box-shadow: 0 4px 15px var(--primary-glow); }
+        .btn-danger { background: rgba(214, 48, 49, 0.15); color: #ff7675; }
         .btn-icon { width: 32px; height: 32px; border-radius: 50%; background: var(--primary); color: white; font-size: 14px; }
 
-        /* HEADER */
         .header { padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; background: rgba(15, 15, 18, 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .user-info { display: flex; align-items: center; gap: 10px; }
+        .user-info { display: flex; align-items: center; gap: 10px; cursor: pointer; }
         .user-avatar { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); background: var(--bg-secondary); }
         .brand { font-size: 16px; font-weight: 800; }
         .brand span { color: var(--primary); }
@@ -39,42 +38,44 @@
         .balance-container { background: rgba(108, 92, 231, 0.15); padding: 6px 6px 6px 14px; border-radius: 30px; display: flex; align-items: center; gap: 10px; border: 1px solid rgba(108, 92, 231, 0.3); }
         .balance-val { font-weight: 700; color: #a29bfe; font-size: 14px; }
 
-        /* MENU */
         .nav-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; padding: 20px; }
-        .nav-item { background: var(--bg-card); padding: 15px; border-radius: var(--radius); text-align: center; font-size: 12px; font-weight: 600; color: var(--text-muted); border: 1px solid rgba(255,255,255,0.03); }
+        .nav-item { background: var(--bg-card); padding: 15px; border-radius: var(--radius); text-align: center; font-size: 12px; font-weight: 600; color: var(--text-muted); border: 1px solid rgba(255,255,255,0.03); cursor: pointer;}
         .nav-item i { font-size: 20px; margin-bottom: 8px; display: block; color: var(--primary); }
 
-        /* CATALOG */
         .section-title { padding: 0 20px; margin-bottom: 15px; font-size: 18px; font-weight: 700; border-left: 4px solid var(--primary); padding-left: 10px; margin-left: 20px; }
         .games-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 20px; }
-        .game-card { background: var(--bg-card); border-radius: var(--radius); height: 140px; position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); }
+        .game-card { background: var(--bg-card); border-radius: var(--radius); height: 140px; position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); cursor: pointer; }
         .game-bg { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; transition: transform 0.3s; }
         .game-card:active .game-bg { transform: scale(1.1); opacity: 0.6; }
         .game-info { position: absolute; bottom: 0; left: 0; width: 100%; padding: 15px 10px; background: linear-gradient(to top, rgba(0,0,0,0.95), transparent); }
         .game-name { font-weight: 700; font-size: 14px; text-shadow: 0 2px 4px black; }
 
-        /* PRODUCT PAGE */
-        #product-page { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-body); z-index: 200; transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); overflow-y: auto; }
-        #product-page.active { transform: translateX(0); }
+        #product-page, #profile-page { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-body); z-index: 200; transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); overflow-y: auto; }
+        .active-page { transform: translateX(0) !important; }
+        
         .page-header { padding: 15px 20px; display: flex; align-items: center; gap: 15px; position: sticky; top: 0; background: rgba(15,15,18,0.95); backdrop-filter: blur(10px); z-index: 10; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .back-btn { font-size: 20px; padding: 10px; color: var(--text-muted); }
+        .back-btn { font-size: 20px; padding: 10px; color: var(--text-muted); cursor: pointer; }
         .items-list { padding: 20px; padding-bottom: 120px; }
+        
+        /* Стили для строки товара в каталоге и корзине */
         .item-row { background: var(--bg-card); padding: 15px; border-radius: 14px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255,255,255,0.03); }
         .item-price { color: var(--success); font-weight: 700; font-size: 14px; background: rgba(0, 184, 148, 0.1); padding: 4px 8px; border-radius: 6px; }
 
-        /* CART */
         .cart-overlay { position: fixed; bottom: 20px; left: 20px; right: 20px; background: rgba(30, 30, 40, 0.95); backdrop-filter: blur(15px); padding: 15px 20px; border-radius: 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); z-index: 300; transform: translateY(150%); transition: transform 0.3s; }
         .cart-overlay.show { transform: translateY(0); }
         .pay-btn { padding: 10px 24px; font-size: 14px; border-radius: 12px; }
 
-        /* DEPOSIT MODAL */
-        #modal-deposit { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 500; align-items: flex-end; animation: fadeIn 0.2s; }
+        /* MODALS */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 500; align-items: flex-end; animation: fadeIn 0.2s; }
         .modal-sheet { background: var(--bg-card); width: 100%; border-radius: 24px 24px 0 0; padding: 25px; padding-bottom: 50px; animation: slideUp 0.3s; }
-        .pay-method { background: var(--bg-secondary); padding: 16px; border-radius: 14px; border: 1px solid var(--primary); position: relative; }
-        .pay-title { display: flex; align-items: center; gap: 10px; font-weight: 600; margin-bottom: 10px; color: #a29bfe; }
-        .pay-details { font-size: 13px; color: var(--text-muted); line-height: 1.6; word-break: break-all; }
-        .copy-btn { font-size: 11px; background: rgba(255,255,255,0.1); padding: 4px 8px; border-radius: 4px; float: right; cursor: pointer; }
+        .pay-method { background: var(--bg-secondary); padding: 16px; border-radius: 14px; border: 1px solid var(--primary); margin-bottom: 15px; }
         
+        .profile-menu-item { background: var(--bg-secondary); padding: 15px; border-radius: 12px; margin-bottom: 10px; display: flex; align-items: center; gap: 15px; font-weight: 600; cursor: pointer; }
+        .profile-menu-item i { color: var(--primary); font-size: 18px; width: 25px; }
+        
+        .input-box { background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); width: 100%; padding: 12px; border-radius: 12px; color: white; margin-bottom: 10px; outline: none; }
+        .input-box:focus { border-color: var(--primary); }
+
         @keyframes fadeIn { from{opacity:0} to{opacity:1} }
         @keyframes slideUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
         .loader { position: fixed; top:0; left:0; width:100%; height:100%; background: var(--bg-body); z-index: 999; display: flex; justify-content: center; align-items: center; transition: opacity 0.5s; }
@@ -87,11 +88,10 @@
 <!-- LOADER -->
 <div class="loader" id="loader"><div class="spinner"></div></div>
 
-<!-- HOME PAGE -->
+<!-- HOME -->
 <div id="home">
-    <!-- Header -->
     <div class="header">
-        <div class="user-info">
+        <div class="user-info" onclick="openProfile()">
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/1024px-Default_pfp.svg.png" id="user-ava" class="user-avatar">
             <div>
                 <div class="brand">Inventory<span>Store</span></div>
@@ -104,14 +104,12 @@
         </div>
     </div>
 
-    <!-- Menu -->
     <div class="nav-grid">
         <div class="nav-item" onclick="openLink('https://t.me/InventoryStoreReviews')"><i class="fas fa-star"></i>Отзывы</div>
         <div class="nav-item" onclick="openLink('https://t.me/dimakovboi')"><i class="fas fa-headset"></i>Поддержка</div>
-        <div class="nav-item" onclick="toggleCartInfo()"><i class="fas fa-shopping-bag"></i>Заказы</div>
+        <div class="nav-item" onclick="openCartModal()"><i class="fas fa-shopping-bag"></i>Корзина</div>
     </div>
 
-    <!-- Catalog -->
     <div class="section-title">Каталог</div>
     <div class="games-grid">
         <div class="game-card" onclick="openGame('bs', 'Brawl Stars')">
@@ -136,110 +134,126 @@
 <!-- PRODUCT PAGE -->
 <div id="product-page">
     <div class="page-header">
-        <div class="back-btn" onclick="closeGame()"><i class="fas fa-arrow-left"></i></div>
+        <div class="back-btn" onclick="closePage('product-page')"><i class="fas fa-arrow-left"></i></div>
         <h3 id="game-title" style="margin:0">Игра</h3>
     </div>
     <div id="items-container" class="items-list"></div>
 </div>
 
-<!-- CART BAR -->
-<div class="cart-overlay" id="cart-bar">
-    <div>
-        <div style="font-size:12px; color:#8b95a5">К оплате</div>
-        <div style="font-size:18px; font-weight:800" id="total-sum">0 ₽</div>
+<!-- CART (FULL PAGE MODE) -->
+<div id="cart-page" style="position:fixed; top:0; left:0; width:100%; height:100%; background:var(--bg-body); z-index:200; transform:translateX(100%); transition:0.3s; overflow-y:auto;">
+    <div class="page-header">
+        <div class="back-btn" onclick="closePage('cart-page')"><i class="fas fa-arrow-left"></i></div>
+        <h3 style="margin:0">Корзина</h3>
     </div>
-    <button class="btn btn-primary pay-btn" onclick="pay()">Оплатить</button>
+    <div id="cart-items" class="items-list"></div>
+    <div class="cart-overlay show">
+        <div>
+            <div style="font-size:12px; color:#8b95a5">К оплате</div>
+            <div style="font-size:18px; font-weight:800" id="cart-total-sum">0 ₽</div>
+        </div>
+        <button class="btn btn-primary pay-btn" onclick="pay()">Оплатить</button>
+    </div>
+</div>
+
+<!-- PROFILE MODAL (FULL PAGE) -->
+<div id="profile-page" style="position:fixed; top:0; left:0; width:100%; height:100%; background:var(--bg-body); z-index:200; transform:translateX(100%); transition:0.3s; overflow-y:auto;">
+    <div class="page-header">
+        <div class="back-btn" onclick="closePage('profile-page')"><i class="fas fa-arrow-left"></i></div>
+        <h3 style="margin:0">Профиль</h3>
+    </div>
+    <div style="padding:20px; text-align:center;">
+        <img src="" id="prof-ava" style="width:80px; height:80px; border-radius:50%; border:3px solid var(--primary); margin-bottom:10px;">
+        <div style="font-size:20px; font-weight:800;" id="prof-name">User</div>
+        <div style="font-size:14px; color:var(--text-muted); margin-bottom:20px;">ID: <span id="prof-id">0</span></div>
+        
+        <div class="balance-container" style="justify-content:center; margin-bottom:30px;">
+            <div style="font-size:24px; color:#a29bfe; font-weight:800;" id="prof-bal">0 ₽</div>
+        </div>
+
+        <div class="profile-menu-item" onclick="openDeposit()">
+            <i class="far fa-credit-card"></i> Пополнить баланс
+        </div>
+        <div class="profile-menu-item" onclick="togglePromoField()">
+            <i class="fas fa-ticket-alt"></i> Ввести промокод
+        </div>
+        
+        <div id="promo-area" style="display:none; margin-bottom:15px; animation:fadeIn 0.3s;">
+            <input type="text" id="promo-input" class="input-box" placeholder="Введите код...">
+            <button class="btn btn-primary" style="width:100%" onclick="activatePromo()">Активировать</button>
+        </div>
+
+        <div class="profile-menu-item" id="admin-btn" style="display:none;" onclick="alert('Админ панель доступна в боте')">
+            <i class="fas fa-tools"></i> Админ Панель (В боте)
+        </div>
+    </div>
 </div>
 
 <!-- DEPOSIT MODAL -->
-<div id="modal-deposit" onclick="if(event.target === this) this.style.display='none'">
+<div id="modal-deposit" class="modal" onclick="if(event.target === this) this.style.display='none'">
     <div class="modal-sheet">
         <div style="display:flex; justify-content:space-between; margin-bottom:20px;">
             <h3 style="margin:0">Пополнить баланс</h3>
             <div style="cursor:pointer; padding:5px" onclick="document.getElementById('modal-deposit').style.display='none'">✕</div>
         </div>
-        <!-- ONLY CARD -->
         <div class="pay-method">
-            <div class="pay-title"><i class="far fa-credit-card"></i> Банковская карта</div>
-            <div class="pay-details">
+            <div style="color:#a29bfe; font-weight:600; margin-bottom:5px"><i class="far fa-credit-card"></i> Банковская карта</div>
+            <div style="font-size:13px; color:var(--text-muted);">
                 Беларусбанк <br>
                 <b id="d-card" style="font-size:15px; color:white;">9112 3800 5000 4904</b>
-                <span class="copy-btn" onclick="copyText('d-card')">Копировать</span>
-                <br><br>
-                ⚠️ После перевода отправьте скриншот чека в поддержку.
+                <span class="copy-btn" style="float:right; padding:4px 8px; background:rgba(255,255,255,0.1); border-radius:4px; cursor:pointer;" onclick="copyText('d-card')">Копировать</span>
+                <br><br>⚠️ Пришлите чек в поддержку.
             </div>
         </div>
     </div>
 </div>
 
 <script>
-    // ==========================================
-    // ВСТАВЬ СЮДА НОВУЮ ССЫЛКУ ИЗ GOOGLE APPS SCRIPT
-    // ==========================================
     const API_URL = "https://script.google.com/macros/s/AKfycbzyMAus-nrPZRVyGnMchWbpIXk0vPQn1GUuNmFJl4ux3NWkX7kxKHUQOZWIlns6RlfJYQ/exec";
-    // ==========================================
-
+    const ADMINS = [1438120200, 5313255256];
+    
     const tg = window.Telegram.WebApp;
     tg.expand();
+    
+    // Используем реальный ID или тестовый, если открыто в браузере
     const userId = tg.initDataUnsafe?.user?.id || 1438120200; 
 
-    // UI INFO
-    if(tg.initDataUnsafe?.user) {
-        document.getElementById('user-name-display').innerText = tg.initDataUnsafe.user.first_name;
-        if (tg.initDataUnsafe.user.photo_url) document.getElementById('user-ava').src = tg.initDataUnsafe.user.photo_url;
-    }
-
-    // CATALOG DATA (UPDATED)
+    // DATA
     const CATALOG = {
-        'bs': [
-            {id:"bs_30", n:"30 Гемов", p:240},
-            {id:"bs_80", n:"80 Гемов", p:570},
-            {id:"bs_170", n:"170 Гемов", p:1110},
-            {id:"bs_360", n:"360 Гемов", p:2200},
-            {id:"bs_950", n:"950 Гемов", p:5500},
-            {id:"bs_2000", n:"2000 Гемов", p:9700},
-            {id:"bs_bp", n:"Brawl Pass", p:890},
-            {id:"bs_bp_plus", n:"Brawl Pass Plus", p:1300},
-            {id:"bs_upg", n:"UP до BP Plus", p:500}
-        ],
-        'pubg': [
-            {id:"pubg_100", n:"100 G-Coin", p:120},
-            {id:"pubg_510", n:"510 G-Coin", p:550},
-            {id:"pubg_1050", n:"1050 G-Coin", p:1100},
-            {id:"pubg_2700", n:"2700 G-Coin", p:2600},
-            {id:"pubg_5500", n:"5500 G-Coin", p:5200},
-            {id:"pubg_11200", n:"11200 G-Coin", p:10000}
-        ],
-        'fn': [
-            {id:"fn_1000", n:"1000 V-Bucks", p:900},
-            {id:"fn_2800", n:"2800 V-Bucks", p:2300},
-            {id:"fn_5000", n:"5000 V-Bucks", p:3800},
-            {id:"fn_13500", n:"13500 V-Bucks", p:8800}
-        ],
-        'bl': [
-            {id:"bl_105", n:"105 Gold", p:150},
-            {id:"bl_310", n:"310 Gold", p:400},
-            {id:"bl_540", n:"540 Gold", p:690},
-            {id:"bl_1100", n:"1100 Gold", p:1400},
-            {id:"bl_2260", n:"2260 Gold", p:2700},
-            {id:"bl_5800", n:"5800 Gold", p:6300}
-        ]
+        'bs': [{id:"bs_30",n:"30 Гемов",p:240},{id:"bs_80",n:"80 Гемов",p:570},{id:"bs_170",n:"170 Гемов",p:1110},{id:"bs_360",n:"360 Гемов",p:2200},{id:"bs_950",n:"950 Гемов",p:5500},{id:"bs_2000",n:"2000 Гемов",p:9700},{id:"bs_bp",n:"Brawl Pass",p:890},{id:"bs_bp_plus",n:"Brawl Pass Plus",p:1300},{id:"bs_upg",n:"UP до BP Plus",p:500}],
+        'pubg': [{id:"pubg_100",n:"100 G-Coin",p:120},{id:"pubg_510",n:"510 G-Coin",p:550},{id:"pubg_1050",n:"1050 G-Coin",p:1100},{id:"pubg_2700",n:"2700 G-Coin",p:2600},{id:"pubg_5500",n:"5500 G-Coin",p:5200},{id:"pubg_11200",n:"11200 G-Coin",p:10000}],
+        'fn': [{id:"fn_1000",n:"1000 V-Bucks",p:900},{id:"fn_2800",n:"2800 V-Bucks",p:2300},{id:"fn_5000",n:"5000 V-Bucks",p:3800},{id:"fn_13500",n:"13500 V-Bucks",p:8800}],
+        'bl': [{id:"bl_105",n:"105 Gold",p:150},{id:"bl_310",n:"310 Gold",p:400},{id:"bl_540",n:"540 Gold",p:690},{id:"bl_1100",n:"1100 Gold",p:1400},{id:"bl_2260",n:"2260 Gold",p:2700},{id:"bl_5800",n:"5800 Gold",p:6300}]
     };
 
-    let cartSum = 0;
-
     async function init() {
+        if(tg.initDataUnsafe?.user) {
+            document.getElementById('user-name-display').innerText = tg.initDataUnsafe.user.first_name;
+            const ava = tg.initDataUnsafe.user.photo_url || "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/1024px-Default_pfp.svg.png";
+            document.getElementById('user-ava').src = ava;
+            document.getElementById('prof-ava').src = ava;
+            document.getElementById('prof-name').innerText = tg.initDataUnsafe.user.first_name;
+        }
+        document.getElementById('prof-id').innerText = userId;
+        if(ADMINS.includes(userId)) document.getElementById('admin-btn').style.display = 'flex';
+
+        updateBalance();
+    }
+
+    async function updateBalance() {
         try {
             const res = await fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "getUserInfo", userId: userId }) });
             const data = await res.json();
             document.getElementById("loader").style.display='none';
             if (data.status === "ok") {
-                animateBalance(0, data.user.balance);
-                updateCart();
+                const bal = data.user.balance + " ₽";
+                document.getElementById("balance").innerText = bal;
+                document.getElementById("prof-bal").innerText = bal;
             }
         } catch (e) { document.getElementById("loader").style.display='none'; }
     }
 
+    // --- NAVIGATION ---
     function openGame(key, name) {
         document.getElementById("game-title").innerText = name;
         const container = document.getElementById("items-container");
@@ -247,51 +261,91 @@
         CATALOG[key].forEach(item => {
             const div = document.createElement('div');
             div.className = 'item-row';
-            div.innerHTML = `<div><b>${item.n}</b></div><div style="text-align:right"><div class="item-price">${item.p} ₽</div><button class="btn btn-primary" style="margin-top:5px; padding:6px 12px; font-size:12px" onclick="addToCart('${item.id}')">Купить</button></div>`;
+            div.innerHTML = `<div><b>${item.n}</b></div><div style="text-align:right"><div class="item-price">${item.p} ₽</div><button class="btn btn-primary" style="margin-top:5px; padding:6px 12px; font-size:12px" onclick="addToCart('${item.id}', '${item.n}', ${item.p})">Купить</button></div>`;
             container.appendChild(div);
         });
-        document.getElementById("product-page").classList.add("active");
+        document.getElementById("product-page").classList.add("active-page");
+    }
+    
+    function closePage(id) { document.getElementById(id).classList.remove("active-page"); }
+    function openLink(url) { tg.openTelegramLink(url); }
+    function openDeposit() { document.getElementById("modal-deposit").style.display = "flex"; }
+    function openProfile() { document.getElementById("profile-page").classList.add("active-page"); updateBalance(); }
+    
+    async function openCartModal() { 
+        document.getElementById("cart-page").classList.add("active-page");
+        const container = document.getElementById("cart-items");
+        container.innerHTML = '<div style="text-align:center; margin-top:50px"><div class="spinner"></div></div>';
+        
+        try {
+            const res = await fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "getCart", userId: userId }) });
+            const data = await res.json();
+            container.innerHTML = "";
+            
+            let total = 0;
+            if(data.items && data.items.length > 0) {
+                data.items.forEach(item => {
+                    total += item.price;
+                    const div = document.createElement('div');
+                    div.className = 'item-row';
+                    // Кнопка удаления с иконкой крестика
+                    div.innerHTML = `
+                        <div><b>${item.name}</b><br><small style="color:#8b95a5">${item.price} ₽</small></div>
+                        <button class="btn btn-danger" style="padding:8px 12px;" onclick="deleteItem(${item.row})"><i class="fas fa-times"></i></button>
+                    `;
+                    container.appendChild(div);
+                });
+            } else {
+                container.innerHTML = '<div style="text-align:center; color:#8b95a5; margin-top:50px">Корзина пуста</div>';
+            }
+            document.getElementById("cart-total-sum").innerText = total + " ₽";
+        } catch(e) { container.innerHTML = "Ошибка загрузки"; }
     }
 
-    function closeGame() { document.getElementById("product-page").classList.remove("active"); }
-    function openDeposit() { document.getElementById("modal-deposit").style.display = "flex"; }
-    function openLink(url) { tg.openTelegramLink(url); }
-
-    async function addToCart(code) {
+    // --- ACTIONS ---
+    async function addToCart(code, name, price) {
         tg.MainButton.showProgress();
         try {
-            await fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "addToCart", userId: userId, itemCode: code }) });
-            tg.showPopup({message: 'Товар добавлен!'});
-            updateCart();
+            await fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "addToCart", userId: userId, itemCode: code, itemName: name, itemPrice: price }) });
+            tg.showPopup({message: 'Добавлено в корзину'});
         } catch(e) {}
         tg.MainButton.hideProgress();
     }
 
-    async function updateCart() {
-        const res = await fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "getCart", userId: userId }) });
-        const data = await res.json();
-        // Сайт должен сам посчитать сумму, так как GAS в режиме моста может вернуть 0
-        // Но GAS мы настроили, так что полагаемся на него или пересчитываем тут
-        // В данном коде GAS возвращает список, посчитаем сумму тут для надежности:
+    async function deleteItem(rowId) {
+        if(!confirm("Удалить товар?")) return;
+        document.getElementById("cart-items").style.opacity = "0.5";
+        try {
+            await fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "deleteItem", userId: userId, row: rowId }) });
+            openCartModal(); // Перезагружаем корзину
+            document.getElementById("cart-items").style.opacity = "1";
+        } catch(e){}
+    }
+
+    function togglePromoField() {
+        const el = document.getElementById("promo-area");
+        el.style.display = el.style.display === "none" ? "block" : "none";
+    }
+
+    async function activatePromo() {
+        const code = document.getElementById("promo-input").value;
+        if(!code) return;
+        const btn = document.querySelector("#promo-area button");
+        const oldText = btn.innerText;
+        btn.innerText = "⏳";
         
-        let total = 0;
-        // Простой пересчет, зная цены
-        if(data.items) {
-           // Поскольку GAS возвращает просто список имен, сложно точно узнать цену.
-           // Но бот Python уже все делает.
-           // Для визуала сайта покажем то, что вернул GAS или 0
-           // Упрощение:
-        }
-        // Чтобы сайт не конфликтовал с ботом, лучше просто говорить "Перейдите в бота для оплаты"
-        // или использовать данные из GAS
-        // В текущей реализации GAS возвращает items с ценой 0, поэтому тут будет 0.
-        // Исправим это, чтобы сайт просто отправлял заявку.
-        
-        // ВАЖНО: Так как вся логика переехала в Python, сайт теперь просто "Витрина".
-        // Оплата происходит через бота.
-        cartSum = 0; // Заглушка
-        const cartBar = document.getElementById("cart-bar");
-        // cartBar.classList.add("show"); // Можно убрать, раз оплата в боте
+        try {
+            const res = await fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "activatePromo", userId: userId, code: code }) });
+            const data = await res.json();
+            if(data.status === "ok") {
+                tg.showPopup({message: `Успех! +${data.amount}₽`});
+                document.getElementById("promo-input").value = "";
+                updateBalance();
+            } else {
+                tg.showAlert(data.message);
+            }
+        } catch(e) { tg.showAlert("Ошибка сети"); }
+        btn.innerText = oldText;
     }
 
     async function pay() {
@@ -302,9 +356,7 @@
         } catch (e) {}
     }
 
-    function toggleCartInfo() { tg.showAlert("Корзина и оплата доступны в меню бота"); }
     function copyText(id) { navigator.clipboard.writeText(document.getElementById(id).innerText); tg.showPopup({message: 'Скопировано!'}); }
-    function animateBalance(start, end) { document.getElementById("balance").innerText = end + " ₽"; }
 
     init();
 </script>
