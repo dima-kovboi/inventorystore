@@ -50,14 +50,13 @@
         .game-info { position: absolute; bottom: 0; left: 0; width: 100%; padding: 15px 10px; background: linear-gradient(to top, rgba(0,0,0,0.95), transparent); }
         .game-name { font-weight: 700; font-size: 14px; text-shadow: 0 2px 4px black; }
 
-        #product-page, #profile-page { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-body); z-index: 200; transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); overflow-y: auto; }
+        #product-page, #profile-page, #cart-page { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-body); z-index: 200; transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); overflow-y: auto; }
         .active-page { transform: translateX(0) !important; }
         
         .page-header { padding: 15px 20px; display: flex; align-items: center; gap: 15px; position: sticky; top: 0; background: rgba(15,15,18,0.95); backdrop-filter: blur(10px); z-index: 10; border-bottom: 1px solid rgba(255,255,255,0.05); }
         .back-btn { font-size: 20px; padding: 10px; color: var(--text-muted); cursor: pointer; }
         .items-list { padding: 20px; padding-bottom: 120px; }
         
-        /* Стили для строки товара в каталоге и корзине */
         .item-row { background: var(--bg-card); padding: 15px; border-radius: 14px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255,255,255,0.03); }
         .item-price { color: var(--success); font-weight: 700; font-size: 14px; background: rgba(0, 184, 148, 0.1); padding: 4px 8px; border-radius: 6px; }
 
@@ -65,7 +64,6 @@
         .cart-overlay.show { transform: translateY(0); }
         .pay-btn { padding: 10px 24px; font-size: 14px; border-radius: 12px; }
 
-        /* MODALS */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 500; align-items: flex-end; animation: fadeIn 0.2s; }
         .modal-sheet { background: var(--bg-card); width: 100%; border-radius: 24px 24px 0 0; padding: 25px; padding-bottom: 50px; animation: slideUp 0.3s; }
         .pay-method { background: var(--bg-secondary); padding: 16px; border-radius: 14px; border: 1px solid var(--primary); margin-bottom: 15px; }
@@ -141,7 +139,7 @@
 </div>
 
 <!-- CART (FULL PAGE MODE) -->
-<div id="cart-page" style="position:fixed; top:0; left:0; width:100%; height:100%; background:var(--bg-body); z-index:200; transform:translateX(100%); transition:0.3s; overflow-y:auto;">
+<div id="cart-page">
     <div class="page-header">
         <div class="back-btn" onclick="closePage('cart-page')"><i class="fas fa-arrow-left"></i></div>
         <h3 style="margin:0">Корзина</h3>
@@ -156,8 +154,8 @@
     </div>
 </div>
 
-<!-- PROFILE MODAL (FULL PAGE) -->
-<div id="profile-page" style="position:fixed; top:0; left:0; width:100%; height:100%; background:var(--bg-body); z-index:200; transform:translateX(100%); transition:0.3s; overflow-y:auto;">
+<!-- PROFILE MODAL -->
+<div id="profile-page">
     <div class="page-header">
         <div class="back-btn" onclick="closePage('profile-page')"><i class="fas fa-arrow-left"></i></div>
         <h3 style="margin:0">Профиль</h3>
@@ -209,16 +207,19 @@
 </div>
 
 <script>
+    // -----------------------------------------------------------
+    // 🔗 ССЫЛКА НА GOOGLE APPS SCRIPT (МОСТ)
+    // -----------------------------------------------------------
     const API_URL = "https://script.google.com/macros/s/AKfycbzyMAus-nrPZRVyGnMchWbpIXk0vPQn1GUuNmFJl4ux3NWkX7kxKHUQOZWIlns6RlfJYQ/exec";
     const ADMINS = [1438120200, 5313255256];
     
     const tg = window.Telegram.WebApp;
     tg.expand();
     
-    // Используем реальный ID или тестовый, если открыто в браузере
+    // Используем тестовый ID, если сайт открыт не в Telegram
     const userId = tg.initDataUnsafe?.user?.id || 1438120200; 
 
-    // DATA
+    // КАТАЛОГ ТОВАРОВ
     const CATALOG = {
         'bs': [{id:"bs_30",n:"30 Гемов",p:240},{id:"bs_80",n:"80 Гемов",p:570},{id:"bs_170",n:"170 Гемов",p:1110},{id:"bs_360",n:"360 Гемов",p:2200},{id:"bs_950",n:"950 Гемов",p:5500},{id:"bs_2000",n:"2000 Гемов",p:9700},{id:"bs_bp",n:"Brawl Pass",p:890},{id:"bs_bp_plus",n:"Brawl Pass Plus",p:1300},{id:"bs_upg",n:"UP до BP Plus",p:500}],
         'pubg': [{id:"pubg_100",n:"100 G-Coin",p:120},{id:"pubg_510",n:"510 G-Coin",p:550},{id:"pubg_1050",n:"1050 G-Coin",p:1100},{id:"pubg_2700",n:"2700 G-Coin",p:2600},{id:"pubg_5500",n:"5500 G-Coin",p:5200},{id:"pubg_11200",n:"11200 G-Coin",p:10000}],
@@ -253,7 +254,7 @@
         } catch (e) { document.getElementById("loader").style.display='none'; }
     }
 
-    // --- NAVIGATION ---
+    // --- НАВИГАЦИЯ ---
     function openGame(key, name) {
         document.getElementById("game-title").innerText = name;
         const container = document.getElementById("items-container");
@@ -272,9 +273,11 @@
     function openDeposit() { document.getElementById("modal-deposit").style.display = "flex"; }
     function openProfile() { document.getElementById("profile-page").classList.add("active-page"); updateBalance(); }
     
+    // --- КОРЗИНА (ОТКРЫТИЕ И ЗАГРУЗКА) ---
     async function openCartModal() { 
         document.getElementById("cart-page").classList.add("active-page");
         const container = document.getElementById("cart-items");
+        // Показываем спиннер пока грузится
         container.innerHTML = '<div style="text-align:center; margin-top:50px"><div class="spinner"></div></div>';
         
         try {
@@ -299,10 +302,10 @@
                 container.innerHTML = '<div style="text-align:center; color:#8b95a5; margin-top:50px">Корзина пуста</div>';
             }
             document.getElementById("cart-total-sum").innerText = total + " ₽";
-        } catch(e) { container.innerHTML = "Ошибка загрузки"; }
+        } catch(e) { container.innerHTML = '<div style="text-align:center;color:red;margin-top:20px">Ошибка загрузки корзины</div>'; }
     }
 
-    // --- ACTIONS ---
+    // --- ДЕЙСТВИЯ ---
     async function addToCart(code, name, price) {
         tg.MainButton.showProgress();
         try {
@@ -314,12 +317,16 @@
 
     async function deleteItem(rowId) {
         if(!confirm("Удалить товар?")) return;
+        // Делаем корзину полупрозрачной чтобы показать процесс
         document.getElementById("cart-items").style.opacity = "0.5";
         try {
             await fetch(API_URL, { method: "POST", body: JSON.stringify({ action: "deleteItem", userId: userId, row: rowId }) });
-            openCartModal(); // Перезагружаем корзину
+            openCartModal(); // Перезагружаем список
             document.getElementById("cart-items").style.opacity = "1";
-        } catch(e){}
+        } catch(e) {
+            document.getElementById("cart-items").style.opacity = "1";
+            tg.showAlert("Ошибка удаления");
+        }
     }
 
     function togglePromoField() {
